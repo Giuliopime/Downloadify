@@ -1,0 +1,36 @@
+:root {
+    --color-primary: #623CEA;
+    --color-spotify: #1DD75E;
+    --color-youtube: #F00;
+
+    --color-card-bg: #f6f8fa;
+    --color-border: #eaecef;
+    --card-border: 1px var(--color-border) solid;
+    --color-text-link: #0366d6;
+
+    /* Input fields */
+    --color-input-border: #e1e4e8;
+    --color-input-focus-border: #0366d6;
+    --color-input-focus-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+
+    /* Error card */
+    --color-error-bg: #ffe3e6;
+    --color-error-border: rgba(158,28,35,0.2);
+    --color-error-icon: rgba(158,28,35,0.6);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
