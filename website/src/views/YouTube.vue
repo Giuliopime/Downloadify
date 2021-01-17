@@ -3,20 +3,20 @@
     <NavBar />
     <div class="main">
       <div class="main-header">
-        <h1>Spotify Downloader</h1>
+        <h1>YouTube Downloader</h1>
       </div>
       <div class="main-content">
         <ErrorCard  err="An error occurred, make sure the URL is correct."/>
-        <MessageCard msg="Track / Album has been successfully downloaded."/>
+        <MessageCard msg="Video / Playlist has been successfully downloaded."/>
 
         <div class="card">
           <label for="url-field" class="input-label">
-            Spotify Song / Album URL
-            <a class="label-link" href="https://support.symdistro.com/hc/en-us/articles/360039036711-Spotify-How-to-obtain-a-URI-URL" target="_blank">How to get it?</a>
+            YouTube Song / Playlist URL
+            <a class="label-link" href="https://support.google.com/youtube/answer/57793?co=GENIE.Platform%3DDesktop&hl=en" target="_blank">How to get it?</a>
           </label>
           <input
               type="text"
-              placeholder="https://open.spotify.com/track/2RBcYkonAofm0rYycVrCGt?si=tACPOcLHRSSSk8YIQWjZbw"
+              placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               name="URL field"
               id="url-field"
               class="input-field"
@@ -52,7 +52,7 @@
                 <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="0.819672131147541s" values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
               </path>
             </g>
-            Download
+              Download
             </svg>
             <span id="btn-text">Download</span>
           </button>
@@ -72,7 +72,7 @@ import ErrorCard from "@/components/ErrorCard";
 import MessageCard from "@/components/MessageCard";
 
 export default {
-  name: "Spotify",
+  name: "YouTube",
   components: {ErrorCard, NavBar, MessageCard},
   /*
   Can be added to prevent exiting the page while downloading
@@ -104,19 +104,19 @@ export default {
       document.getElementById('loading-svg').classList.remove('hidden');
     },
     sendDownloadRequest() {
-      const spotifyLink = document.getElementById('url-field').value;
+      const youtubeLink = document.getElementById('url-field').value;
 
-      if(!spotifyLink)
+      if(!youtubeLink)
         return this.showErrorCard();
 
       this.showDownloadingStateBtn();
 
       axios({
         method: 'post',
-        url: BASEURL + 'spotify',
+        url: BASEURL + 'youtube',
         responseType: 'arraybuffer',
         data: {
-          spotifyURL: spotifyLink
+          spotifyURL: youtubeLink
         }
       })
           .then(async res => {
@@ -156,7 +156,7 @@ export default {
 }
 
 .btn {
-  background-color: var(--color-spotify-darker);
+  background-color: var(--color-youtube);
   transition: all var(--transition-speed);
 }
 

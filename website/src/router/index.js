@@ -9,6 +9,7 @@ const { BASEURL } = require('../../config.json');
 import Home from "../views/Home";
 import Login from "../views/Login.vue";
 import Spotify from "@/views/Spotify";
+import YouTube from "@/views/YouTube";
 
 Vue.use(VueRouter);
 
@@ -17,9 +18,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: "/login",
@@ -30,6 +28,14 @@ const routes = [
     path: "/spotify",
     name: 'spotify',
     component: Spotify,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/youtube",
+    name: 'youtube',
+    component: YouTube,
     meta: {
       requiresAuth: true
     }

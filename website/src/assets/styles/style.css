@@ -1,12 +1,13 @@
 :root {
     --color-spotify: #1dd75e;
     --color-spotify-darker: #23a24d;
-    --color-youtube: #ff0000;
     --transition-speed: 300ms;
 }
 
 :root[color-mode="light"] {
     --color-primary: #623cea;
+    --color-youtube: #ff0000;
+
     --color-main-bg: white;
     --color-footer-bg: white;
     --color-nav-bg: #f6f8fa;
@@ -35,6 +36,7 @@
 
 :root[color-mode="dark"] {
     --color-primary: #714fe9;
+    --color-youtube: #cb0000;
 
     --color-main-bg: #0e1116;
     --color-footer-bg: #0e1116;
