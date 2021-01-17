@@ -9,7 +9,7 @@
         <ErrorCard  msg="An error occurred, make sure the URL is correct."/>
 
         <div class="card">
-          <label for="token-field" class="input-label">
+          <label for="url-field" class="input-label">
             Spotify Song / Album URL
             <a class="label-link" href="https://support.symdistro.com/hc/en-us/articles/360039036711-Spotify-How-to-obtain-a-URI-URL" target="_blank">How to get it?</a>
           </label>
