@@ -18,6 +18,11 @@
     --color-error-bg: #ffe3e6;
     --color-error-border: rgba(158,28,35,0.2);
     --color-error-icon: rgba(158,28,35,0.6);
+
+    /* Info card */
+    --color-info-bg: rgba(150 ,129 ,234, 0.5);
+    --color-info-border: #9681EA;
+    --color-info-icon: var(--color-primary);
 }
 
 

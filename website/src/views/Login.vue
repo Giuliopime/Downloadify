@@ -49,7 +49,7 @@ export default {
   components: {ErrorCard},
   methods: {
     showErrorCard() {
-      document.getElementsByClassName('error-card')[0].classList.remove('hidden')
+      document.getElementsByClassName('msg-card')[0].classList.remove('hidden')
     },
     async logIn() {
       // Disable the submit button for 0.3 seconds to prevent spam and to show the Signing in... text

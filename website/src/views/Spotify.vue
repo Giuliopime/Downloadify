@@ -6,7 +6,8 @@
         <h1>Spotify Downloader</h1>
       </div>
       <div class="main-content">
-        <ErrorCard  msg="An error occurred, make sure the URL is correct."/>
+        <ErrorCard  msg="An error occurred, make sure the URL is correct." id="err-card"/>
+        <MessageCard msg="Track / Album has been successfully downloaded" id="msg-card" />
 
         <div class="card">
           <label for="url-field" class="input-label">
@@ -42,13 +43,17 @@ const axios = require('axios');
 const { BASEURL } = require('../../config.json');
 import NavBar from "@/components/NavBar";
 import ErrorCard from "@/components/ErrorCard";
+import MessageCard from "@/components/MessageCard";
 
 export default {
   name: "Spotify",
-  components: {ErrorCard, NavBar},
+  components: {ErrorCard, NavBar, MessageCard},
   methods: {
     showErrorCard() {
-      document.getElementsByClassName('error-card')[0].classList.remove('hidden')
+      document.getElementById('err-card').classList.remove('hidden')
+    },
+    showMessageCard() {
+      document.getElementById('msg-card').classList.remove('hidden')
     },
     sendDownloadRequest() {
       const spotifyLink = document.getElementById('url-field').value;
@@ -60,23 +65,28 @@ export default {
       dlBtn.disabled = true;
       dlBtn.innerText = 'Downloading, please be patient...';
 
-      axios.post(BASEURL + 'spotify', { spotifyURL: spotifyLink, responseType: 'blob' })
+      axios({
+        method: 'post',
+        url: BASEURL + 'spotify',
+        responseType: 'arraybuffer',
+        data: {
+          spotifyURL: spotifyLink
+        }
+      })
           .then(async res => {
             // If the request wasn't successful show the error card
             if(res.status !== 200)
               this.showErrorCard();
             else {
-              const binaryData = [];
-              binaryData.push(res.data);
-              const url = window.URL.createObjectURL(new Blob(binaryData, {type: 'application/octet-stream'}));
+              console.log(res.data)
+              const url = window.URL.createObjectURL(new Blob([res.data], {type: "zip"}));
               const a = document.getElementById('download-a-el');
               a.href = url;
 
-              a.download = 'test.zip';
-              document.body.appendChild(a);
+              a.download = 'spotify-download.zip';
               a.click();
               window.URL.revokeObjectURL(url);
-              alert('your file has downloaded!'); // or you know, something with better UX...
+              this.showMessageCard();
             }
             restoreDlBtn()
           })

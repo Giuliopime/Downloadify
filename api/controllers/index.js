@@ -47,6 +47,7 @@ exports.newUser = async (req, res) => {
 
 
 exports.spotify = async (req, res) => {
+    console.log(req.body)
     const spotifyURL = req.body.spotifyURL;
 
     if(!spotifyURL)

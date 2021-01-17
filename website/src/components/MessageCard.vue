@@ -1,15 +1,15 @@
 <template>
-  <div class="err-card hidden">
-    <div class="err-card-content">
-      {{ err }}
+  <div class="msg-card hidden">
+    <div class="msg-card-content">
+      {{ msg }}
       <button
-          class="err-card-btn"
+          class="msg-card-btn"
           type="button"
           aria-label="Dismiss this message"
-          v-on:click="hideErrorCard"
+          v-on:click="hideMsgCard"
       >
         <svg
-            class="err-icon"
+            class="msg-icon"
             viewBox="0 0 16 16"
             width="16"
             height="16"
@@ -29,11 +29,11 @@
 export default {
   name: "ErrorCard",
   props: {
-    err: String
+    msg: String
   },
   methods: {
-    hideErrorCard () {
-      document.getElementsByClassName('err-card')[0].classList.add('hidden')
+    hideMsgCard () {
+      document.getElementsByClassName('msg-card')[0].classList.add('hidden')
     },
   }
 }
@@ -41,38 +41,38 @@ export default {
 
 <style scoped>
 /* Error card */
-.err-card {
+.msg-card {
   width: 100%;
-  background-color: var(--color-error-bg);
+  background-color: var(--color-info-bg);
   padding: 10px 20px;
   margin-bottom: 15px;
   font-size: 13px;
-  border: 1px var(--color-error-border) solid;
+  border: 1px var(--color-info-border) solid;
   border-radius: 5px;
 }
 
-.err-card-content {
+.msg-card-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.err-icon {
-  fill: var(--color-error-icon);
+.msg-icon {
+  fill: var(--color-info-icon);
 }
 
-.err-card-btn {
+.msg-card-btn {
   background: none;
   border: none;
   margin-top: 2px;
 }
 
-.err-icon:hover {
+.msg-icon:hover {
   cursor: pointer;
   opacity: 0.7;
 }
 
-.err-card-btn:focus {
+.msg-card-btn:focus {
   outline: none;
   box-shadow: none;
 }
