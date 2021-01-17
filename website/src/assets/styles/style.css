@@ -1,7 +1,7 @@
 :root {
     --color-primary: #623cea;
     --color-spotify: #1dd75e;
-    --color-spotify-darker: #1ed760;
+    --color-spotify-darker: #23a24d;
     --color-youtube: #ff0000;
 
     --color-card-bg: #f6f8fa;
@@ -59,7 +59,7 @@ h1 {
 
 /* Utility classes */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .card {

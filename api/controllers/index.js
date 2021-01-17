@@ -47,7 +47,6 @@ exports.newUser = async (req, res) => {
 
 
 exports.spotify = async (req, res) => {
-    console.log(req.body)
     const spotifyURL = req.body.spotifyURL;
 
     if(!spotifyURL)
@@ -71,21 +70,9 @@ exports.spotify = async (req, res) => {
         }
         else {
             const name = fs.readdirSync(directoryPath)[0];
+            res.set('zip-file-name', name.replace(path.extname(name), ''));
 
-            const zipPath = `${directoryPathUnique}/${name.replace(path.extname(name), '')}.zip`;
-
-            const output = fs.createWriteStream(zipPath);
             const archive = archiver('zip', { zlib: { level: 9 } });
-            archive.pipe(output);
-
-            output.on('close', () => {
-                console.log('Finished creating zip');
-            });
-
-            output.on('error', () => {
-                res.status(404).send("Something went wrong, make sure the spotify URL is correct");
-            });
-
 
             archive.directory(`${directoryPath}/`, name);
             archive.pipe(res);

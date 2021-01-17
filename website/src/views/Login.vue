@@ -12,7 +12,7 @@
         <div class="main-header">
           <h1>Sign in to Downloadify</h1>
         </div>
-        <ErrorCard msg="Invalid Token."/>
+        <ErrorCard err="Invalid Token."/>
         <form class="card">
           <label for="token-field" class="input-label">
             Access Token
@@ -49,7 +49,7 @@ export default {
   components: {ErrorCard},
   methods: {
     showErrorCard() {
-      document.getElementsByClassName('msg-card')[0].classList.remove('hidden')
+      document.getElementsByClassName('err-card')[0].classList.remove('hidden')
     },
     async logIn() {
       // Disable the submit button for 0.3 seconds to prevent spam and to show the Signing in... text
