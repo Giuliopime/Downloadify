@@ -12,10 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "jszip": "^3.5.0",
     "mongoose": "^5.11.12"
   },
   "devDependencies": {
     "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "uuid": "^8.3.2"
   }
 }

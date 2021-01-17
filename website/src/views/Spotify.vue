@@ -23,8 +23,8 @@
           />
           <button
               class="btn"
-              id="submit-btn"
-              v-on:click="showErrorCard"
+              id="download-btn"
+              v-on:click="sendDownloadRequest"
           >
             <svg id="dl-svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-circle-down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143.6-28.9L288 302.6V120c0-13.3-10.7-24-24-24h-16c-13.3 0-24 10.7-24 24v182.6l-72.4-75.5c-9.3-9.7-24.8-9.9-34.3-.4l-10.9 11c-9.4 9.4-9.4 24.6 0 33.9L239 404.3c9.4 9.4 24.6 9.4 33.9 0l132.7-132.7c9.4-9.4 9.4-24.6 0-33.9l-10.9-11c-9.5-9.5-25-9.3-34.3.4z"></path></svg>
             Download
@@ -36,8 +36,11 @@
 </template>
 
 <script>
+const axios = require('axios');
+const { BASEURL } = require('../../config.json');
 import NavBar from "@/components/NavBar";
 import ErrorCard from "@/components/ErrorCard";
+
 export default {
   name: "Spotify",
   components: {ErrorCard, NavBar},
@@ -45,6 +48,38 @@ export default {
     showErrorCard() {
       document.getElementsByClassName('error-card')[0].classList.remove('hidden')
     },
+    sendDownloadRequest() {
+      const spotifyLink = document.getElementById('url-field').value;
+
+      if(!spotifyLink)
+        return this.showErrorCard();
+
+      const dlBtn = document.getElementById('download-btn');
+      dlBtn.disabled = true;
+      dlBtn.innerText = 'Downloading, please be patient...';
+
+      axios.post(BASEURL + 'spotify', { spotifyURL: spotifyLink })
+          .then(async res => {
+            // If the request wasn't successful show the error card
+            if(res.status !== 200)
+              this.showErrorCard();
+            // Otherwise
+            else
+              await this.$router.push({name: 'Home'});
+
+            restoreDlBtn()
+          })
+          .catch(() => {
+            restoreDlBtn()
+            this.showErrorCard();
+          });
+
+
+      function restoreDlBtn() {
+        dlBtn.disabled = false;
+        dlBtn.innerText = "Download";
+      }
+    }
   }
 }
 </script>

@@ -9,4 +9,7 @@ module.exports = (app) => {
 
     app.route('/new-user')
         .get(controller.newUser)
+
+    app.route('/spotify')
+        .post(controller.spotify)
 };
