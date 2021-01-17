@@ -1,4 +1,4 @@
-# Downloadify
+# [Downloadify](https://downloadify.giuliopime.dev)
 Downloadify is a website that can be used to download YouTube videos / playlists (with the option to download only audio) & Spotify songs / albums / playlists.  
 
 ### TODO (but I'm too lazy)
