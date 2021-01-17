@@ -23,6 +23,10 @@
               autocapitalize="off"
               autocomplete="off"
           />
+          <div class="cb-field">
+            <input type="checkbox" name="only-audio" id="only-audio-cb" value="0">
+            <label for="only-audio-cb" class="cb-label">audio only</label>
+          </div>
           <button
               class="btn"
               id="download-btn"
@@ -67,6 +71,7 @@
 <script>
 const axios = require('axios');
 const { BASEURL } = require('../../config.json');
+
 import NavBar from "@/components/NavBar";
 import ErrorCard from "@/components/ErrorCard";
 import MessageCard from "@/components/MessageCard";
@@ -113,10 +118,11 @@ export default {
 
       axios({
         method: 'post',
-        url: BASEURL + 'youtube',
+        url: BASEURL + 'spotify',
         responseType: 'arraybuffer',
         data: {
-          spotifyURL: youtubeLink
+          youtubeURL: youtubeLink,
+          audioOnly: document.getElementById('only-audio-cb').checked
         }
       })
           .then(async res => {
@@ -152,7 +158,21 @@ export default {
 }
 
 .input-field {
-  margin: 5px 0 30px 0;
+  margin: 5px 0 6px 0;
+}
+
+.cb-field {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-bottom: 30px;
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+#only-audio-cb {
+  margin-right: 5px;
+  border: 1px var(--color-input-border) solid !important;
 }
 
 .btn {

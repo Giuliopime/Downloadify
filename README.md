@@ -5,4 +5,4 @@ Downloadify is a website that can be used to download YouTube videos / playlists
 - Implement Redis for caching purposes
 - Make APIs usable without cookies (so accept headers for access tokens)
 - Permit users to input more links at once and download them all together
-- Make Spotify downloads client-side 
+- Make Spotify and YouTube downloads client-side 
