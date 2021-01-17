@@ -12,11 +12,14 @@
         <div class="main-header">
           <h1>Sign in to Downloadify</h1>
         </div>
+
         <ErrorCard err="Invalid Token."/>
+        <MessageCard msg="Please contact Giuliopime to get your token back."> Instagram to get your token back"></MessageCard>
+
         <form class="card">
           <label for="token-field" class="input-label">
             Access Token
-            <router-link class="label-link" to="/token-forgot">Forgot token?</router-link>
+            <span class="label-link" v-on:click="showMessageCard">Forgot token?</span>
           </label>
           <input
             type="password"
@@ -41,15 +44,19 @@
 
 <script>
 import ErrorCard from "@/components/ErrorCard";
+import MessageCard from "@/components/MessageCard";
 const axios = require('axios');
 const { BASEURL } = require('../../config.json');
 
 export default {
   name: "Login",
-  components: {ErrorCard},
+  components: {ErrorCard, MessageCard},
   methods: {
     showErrorCard() {
       document.getElementsByClassName('err-card')[0].classList.remove('hidden')
+    },
+    showMessageCard() {
+      document.getElementsByClassName('msg-card')[0].classList.remove('hidden');
     },
     async logIn() {
       // Disable the submit button for 0.3 seconds to prevent spam and to show the Signing in... text

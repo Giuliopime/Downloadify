@@ -73,11 +73,14 @@ import MessageCard from "@/components/MessageCard";
 export default {
   name: "Spotify",
   components: {ErrorCard, NavBar, MessageCard},
+  /*
+  Can be added to prevent exiting the page while downloading
   created() {
     window.onbeforeunload = () => {
       return "";
     }
   },
+  */
   methods: {
     showErrorCard() {
       document.getElementsByClassName('err-card')[0].classList.remove('hidden')

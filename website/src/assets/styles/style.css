@@ -177,6 +177,11 @@ h1 {
     font-weight: 600;
 }
 
+.label-link:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 
 /* Main site sections (usually the one between the navbar and the footer */
 .main {
