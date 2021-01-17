@@ -8,21 +8,21 @@
       </div>
     </div>
     <div class="main">
-      <div class="mainContent">
-        <div class="mainHeader">
+      <div class="main-content">
+        <div class="main-header">
           <h1>Sign in to Downloadify</h1>
         </div>
-        <div class="errorCard hiddenCard">
-          <div class="errorCardContent">
+        <div class="error-card hidden">
+          <div class="error-card-content">
             Invalid Token.
             <button
-              class="errorCardBtn"
+              class="error-card-btn"
               type="button"
               aria-label="Dismiss this message"
               v-on:click="hideErrorCard"
             >
               <svg
-                class="errorIcon"
+                class="error-icon"
                 viewBox="0 0 16 16"
                 width="16"
                 height="16"
@@ -36,27 +36,26 @@
             </button>
           </div>
         </div>
-        <form id="loginForm">
-          <label for="tokenField" class="input-label">
+        <form id="login-form">
+          <label for="token-field" class="input-label">
             Access Token
             <a class="label-link" href="/token-reset">Forgot token?</a>
           </label>
           <input
             type="password"
             name="tokenField"
-            id="tokenField"
-            class="inputField"
+            id="token-field"
+            class="input-field"
             autocapitalize="off"
             autocomplete="token"
           />
-          <input
-            name="login"
-            value="Sign In"
+          <button
             class="btn"
-            id="submitBtn"
-            data-disable-with="Signing in..."
+            id="submit-btn"
             v-on:click="logIn"
-          />
+          >
+            Sign in
+          </button>
         </form>
       </div>
     </div>
@@ -71,18 +70,31 @@ export default {
   name: "Login",
   methods: {
     hideErrorCard () {
-      document.getElementsByClassName('errorCard')[0].classList.add('hiddenCard')
+      document.getElementsByClassName('error-card')[0].classList.add('hidden')
     },
     showErrorCard() {
-      document.getElementsByClassName('errorCard')[0].classList.remove('hiddenCard')
+      document.getElementsByClassName('error-card')[0].classList.remove('hidden')
     },
     async logIn() {
-      const token = document.getElementById('tokenField').value;
+      // Disable the submit button for 0.3 seconds to prevent spam and to show the Signing in... text
+      const loginButton = document.getElementById('submit-btn');
 
+      loginButton.disabled = true;
+      loginButton.innerText = 'Signing in...'
+
+      setTimeout(() => {
+        loginButton.disabled = false;
+        loginButton.innerText = "Sign in";
+      }, 300);
+
+
+      const token = document.getElementById('token-field').value;
+
+      // If no token has been entered show error by default
       if(!token)
         return this.showErrorCard()
 
-
+      // Make get request to the server
       axios({
         url: BASEURL + 'login',
         headers: {
@@ -90,8 +102,10 @@ export default {
         }
       })
       .then(async res => {
+        // If the request wasn't successful the token was invalid, so show an error
         if(res.status !== 200)
           this.showErrorCard();
+        // Otherwise the token was correct
         else
           await this.$router.push({name: 'Home'});
       })
@@ -103,54 +117,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .header {
   width: 100%;
   padding: 32px 0 24px 0;
 }
-
 .header-container {
   text-align: center;
 }
-
 .header-logo {
   height: 70px;
 }
 
-.main {
-  width: 100%;
-}
 
-.mainContent {
+.main-content {
   width: 340px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  padding: 0 16px 0 16px;
-}
-
-.mainHeader {
-  width: 100%;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 24px;
-  font-weight: 300;
-  letter-spacing: -0.5px;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.hiddenCard {
-  display: none;
 }
 
 /* Error card */
-.errorCard {
+.error-card {
   width: 100%;
   background-color: var(--color-error-bg);
   padding: 10px 20px;
@@ -160,33 +145,35 @@ h1 {
   border-radius: 5px;
 }
 
-.errorCardContent {
+.error-card-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.errorIcon {
+.error-icon {
   fill: var(--color-error-icon);
 }
 
-.errorCardBtn {
+.error-card-btn {
   background: none;
   border: none;
   margin-top: 2px;
 }
 
-.errorIcon:hover {
+.error-icon:hover {
   cursor: pointer;
   opacity: 0.7;
 }
 
-.errorCardBtn:focus {
+.error-card-btn:focus {
   outline: none;
   box-shadow: none;
 }
 
-#loginForm {
+
+/* Login form */
+#login-form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -215,7 +202,7 @@ h1 {
   font-weight: 600;
 }
 
-.inputField {
+.input-field {
   width: 100%;
   margin: 5px 0 30px 0;
   padding: 5px 12px;
@@ -225,27 +212,9 @@ h1 {
   border: 1px solid var(--color-input-border);
   box-sizing: border-box;
 }
-.inputField:focus {
+.input-field:focus {
   outline: none !important;
   border-color: var(--color-input-focus-border);
   box-shadow: var(--color-input-focus-shadow);
-}
-
-.btn {
-  width: 100%;
-  text-align: center;
-  color: white;
-  padding: 5px 16px;
-  line-height: 20px;
-  font-weight: 500;
-  font-size: 14px;
-  border: 1px rgba(27, 31, 35, 0.15) solid;
-  border-radius: 6px;
-  background-color: var(--color-primary);
-  transition: all 0.3s;
-}
-.btn:hover {
-  opacity: 0.9;
-  cursor: pointer;
 }
 </style>

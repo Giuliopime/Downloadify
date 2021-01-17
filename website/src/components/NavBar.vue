@@ -1,5 +1,5 @@
 <template>
-  <div id="NavBar">
+  <div id="navbar">
     <router-link to="/">
       <div class="logo-item">
         <img src="../assets/images/logo.png" alt="logo" class="logo-image">
@@ -19,7 +19,7 @@ name: "NavBar"
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@800&family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@800&display=swap');
 
-#NavBar {
+#navbar {
   width: 100%;
   height: 12vh;
   background-color: var(--color-card-bg);
@@ -57,7 +57,7 @@ name: "NavBar"
   transition: 300ms;
 }
 
-#NavBar a:hover .logo-name::after {
+#navbar a:hover .logo-name::after {
   width: 100%;
 }
 </style>

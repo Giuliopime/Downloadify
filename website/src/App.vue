@@ -20,6 +20,7 @@ export default {
 
 <style>
 @import "assets/styles/style.css";
+
 /* Sticky footer setup */
 #app {
   height: 100%;
