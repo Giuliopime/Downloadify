@@ -35,6 +35,7 @@
 
 :root[color-mode="dark"] {
     --color-primary: #714fe9;
+
     --color-main-bg: #0e1116;
     --color-footer-bg: #0e1116;
     --color-nav-bg: #171b21;
@@ -51,14 +52,14 @@
     --color-input-focus-shadow: 0 0 0 3px rgba(3,102,214,0.3);
 
     /* Error card */
-    --color-error-bg: #c85562;
+    --color-error-bg: rgba(200, 85, 98, 0.9);
     --color-error-border: rgba(255, 255, 255, 0.2);
     --color-error-icon: #dbe0e5;
 
     /* Info card */
     --color-info-bg: rgba(150 ,129 ,234, 0.5);
-    --color-info-border: #9681EA;
-    --color-info-icon: var(--color-primary);
+    --color-info-border: #836ae5;
+    --color-info-icon: var(--color-text);
 }
 
 :root[color-mode="light"] .light-toggle {
@@ -136,7 +137,7 @@ h1 {
     background-color: var(--color-primary);
     transition: all var(--transition-speed);
     outline:none;
-    color: var(--color-text);
+    color: #fff;
 }
 .btn:hover {
     opacity: 0.9;
