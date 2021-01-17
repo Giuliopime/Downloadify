@@ -1,9 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home";
-import Login from "../views/Login.vue";
+
+// APIs interaction
 const axios = require('axios');
 const { BASEURL } = require('../../config.json');
+
+// Components
+import Home from "../views/Home";
+import Login from "../views/Login.vue";
+import Spotify from "@/views/Spotify";
 
 Vue.use(VueRouter);
 
@@ -19,7 +24,15 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: Login
+  },
+  {
+    path: "/spotify",
+    name: 'spotify',
+    component: Spotify,
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 

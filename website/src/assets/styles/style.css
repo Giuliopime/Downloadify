@@ -1,7 +1,8 @@
 :root {
-    --color-primary: #623CEA;
-    --color-spotify: #1DD75E;
-    --color-youtube: #F00;
+    --color-primary: #623cea;
+    --color-spotify: #1dd75e;
+    --color-spotify-darker: #1ed760;
+    --color-youtube: #ff0000;
 
     --color-card-bg: #f6f8fa;
     --color-border: #eaecef;
@@ -56,9 +57,25 @@ h1 {
     display: none;
 }
 
+.card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background-color: var(--color-card-bg);
+}
+
+
 .btn {
     width: 100%;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
     padding: 5px 16px;
     line-height: 20px;
@@ -68,10 +85,42 @@ h1 {
     border-radius: 6px;
     background-color: var(--color-primary);
     transition: all 0.3s;
+    outline:none;
 }
 .btn:hover {
     opacity: 0.9;
     cursor: pointer;
+}
+
+
+.input-field {
+    width: 100%;
+    padding: 5px 12px;
+    line-height: 20px;
+    vertical-align: middle;
+    border-radius: 6px;
+    border: 1px solid var(--color-input-border);
+    box-sizing: border-box;
+}
+.input-field:focus {
+    outline: none !important;
+    border-color: var(--color-input-focus-border);
+    box-shadow: var(--color-input-focus-shadow);
+}
+
+.input-label {
+    align-self: flex-start;
+    width: 100%;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.label-link {
+    float: right;
+    font-size: 12px;
+    color: var(--color-text-link);
+    text-decoration: none;
+    font-weight: 600;
 }
 
 
