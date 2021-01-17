@@ -6,12 +6,15 @@
         <span class="logo-name">Downloadify</span>
       </div>
     </router-link>
+    <LightSwitch id="light-switch"/>
   </div>
 </template>
 
 <script>
+import LightSwitch from "@/components/ThemeToggler";
 export default {
-name: "NavBar"
+name: "NavBar",
+  components: {LightSwitch}
 }
 </script>
 
@@ -22,12 +25,14 @@ name: "NavBar"
 #navbar {
   width: 100%;
   height: 12vh;
-  background-color: var(--color-card-bg);
+  background-color: var(--color-nav-bg);
   border-bottom: var(--card-border);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 5px 20px;
   margin-bottom: 5vh;
+  transition: all var(--transition-speed);
 }
 
 .logo-item {
@@ -47,6 +52,7 @@ name: "NavBar"
   font-size: 1.5rem;
   text-transform: uppercase;
   text-decoration: none;
+  color: var(--color-text)
 }
 .logo-name::after {
   content: '';
@@ -54,7 +60,7 @@ name: "NavBar"
   height: 0.5vh;
   display: block;
   background: #623CEA;
-  transition: 300ms;
+  transition: var(--transition-speed);
 }
 
 #navbar a:hover .logo-name::after {

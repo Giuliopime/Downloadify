@@ -8,3 +8,8 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount("#app");
+
+
+// Dark theme preference
+if (localStorage.getItem("color-mode") === "dark" || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('color-mode')))
+  document.documentElement.setAttribute('color-mode', 'dark');

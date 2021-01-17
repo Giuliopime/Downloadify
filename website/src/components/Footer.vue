@@ -24,6 +24,8 @@ export default {
   text-align: center;
   font-size: 10px;
   letter-spacing: 1.5px;
+  background-color: var(--color-footer-bg);
+  transition: background-color var(--transition-speed);
 }
 
 #author {
@@ -44,6 +46,6 @@ export default {
   margin-right: 10px;
 }
 .icon-fill-section {
-  fill: black;
+  fill: var(--color-text);
 }
 </style>

@@ -1,13 +1,21 @@
 :root {
-    --color-primary: #623cea;
     --color-spotify: #1dd75e;
     --color-spotify-darker: #23a24d;
     --color-youtube: #ff0000;
+    --transition-speed: 300ms;
+}
+
+:root[color-mode="light"] {
+    --color-primary: #623cea;
+    --color-main-bg: white;
+    --color-footer-bg: white;
+    --color-nav-bg: #f6f8fa;
+    --color-text: black;
+    --color-text-link: #0366d6;
 
     --color-card-bg: #f6f8fa;
     --color-border: #eaecef;
     --card-border: 1px var(--color-border) solid;
-    --color-text-link: #0366d6;
 
     /* Input fields */
     --color-input-border: #e1e4e8;
@@ -25,6 +33,41 @@
     --color-info-icon: var(--color-primary);
 }
 
+:root[color-mode="dark"] {
+    --color-primary: #714fe9;
+    --color-main-bg: #0e1116;
+    --color-footer-bg: #0e1116;
+    --color-nav-bg: #171b21;
+    --color-text: #dbe0e5;
+    --color-text-link: #69a7f8;
+
+    --color-card-bg: #0e1116;
+    --color-border: #31363c;
+    --card-border: 1px var(--color-border) solid;
+
+    /* Input fields */
+    --color-input-border: #525456;
+    --color-input-focus-border: #0366d6;
+    --color-input-focus-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+
+    /* Error card */
+    --color-error-bg: #c85562;
+    --color-error-border: rgba(255, 255, 255, 0.2);
+    --color-error-icon: #dbe0e5;
+
+    /* Info card */
+    --color-info-bg: rgba(150 ,129 ,234, 0.5);
+    --color-info-border: #9681EA;
+    --color-info-icon: var(--color-primary);
+}
+
+:root[color-mode="light"] .light-toggle {
+    display: none;
+}
+:root[color-mode="dark"] .dark-toggle {
+    display: none;
+}
+
 
 /* General styling */
 * {
@@ -37,6 +80,9 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    color: var(--color-text);
+    background: var(--color-main-bg);
+    transition: background-color var(--transition-speed);
 }
 
 body {
@@ -45,7 +91,7 @@ body {
 
 a {
     text-decoration: none;
-    color: black;
+    color: var(--color-text-link);
 }
 
 h1 {
@@ -81,7 +127,6 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     padding: 5px 16px;
     line-height: 20px;
     font-weight: 500;
@@ -89,8 +134,9 @@ h1 {
     border: 1px rgba(27, 31, 35, 0.15) solid;
     border-radius: 6px;
     background-color: var(--color-primary);
-    transition: all 0.3s;
+    transition: all var(--transition-speed);
     outline:none;
+    color: var(--color-text);
 }
 .btn:hover {
     opacity: 0.9;
@@ -105,7 +151,9 @@ h1 {
     vertical-align: middle;
     border-radius: 6px;
     border: 1px solid var(--color-input-border);
+    background-color: var(--color-card-bg);
     box-sizing: border-box;
+    color: var(--color-text);
 }
 .input-field:focus {
     outline: none !important;

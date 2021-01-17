@@ -153,7 +153,7 @@ export default {
 
 .btn {
   background-color: var(--color-spotify-darker);
-  transition: all 0.3s;
+  transition: all var(--transition-speed);
 }
 
 .btn-icon {

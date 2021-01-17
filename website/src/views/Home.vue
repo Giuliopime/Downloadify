@@ -60,7 +60,7 @@ export default {
   background-color: var(--color-card-bg);
   border: 1px var(--color-border) solid;
   border-radius: 8px;
-  transition: all 0.25s linear;
+  transition: all var(--transition-speed) linear;
   opacity: 0.9;
 }
 .platform-logo {
