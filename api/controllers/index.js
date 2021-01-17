@@ -3,7 +3,8 @@ const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require('uuid');
-const JSZip = require('jszip');
+const archiver = require('archiver');
+
 
 exports.login = async (req, res) => {
     const token = req.headers.authorization;
@@ -51,8 +52,15 @@ exports.spotify = async (req, res) => {
     if(!spotifyURL)
         return res.status(404).send("A valid spotify URL hasn't been provided, please pass it in the request data using JSON");
 
+
+    if (!fs.existsSync(path.join(__dirname, '..', 'spotify-downloads')))
+        fs.mkdirSync(path.join(__dirname, '..') + '/spotify-downloads')
+
+
     const randValue = uuidv4();
-    const directoryPath = path.join(__dirname, '..', 'spotify-downloads') + '/' + randValue;
+    const directoryPathUnique = path.join(__dirname, '..', 'spotify-downloads') + '/' + randValue;
+    fs.mkdirSync(directoryPathUnique)
+    const directoryPath = directoryPathUnique + '/downloads';
     fs.mkdirSync(directoryPath)
 
     exec(`spotifydl ${spotifyURL} -o ${directoryPath}`, (error, stdout, stderr) => {
@@ -61,23 +69,26 @@ exports.spotify = async (req, res) => {
             return res.status(404).send("Something went wrong, make sure the spotify URL is correct");
         }
         else {
-            const zip = new JSZip();
-            const name = ""
+            const name = fs.readdirSync(directoryPath)[0];
 
-            fs.readdir(directoryPath, (err, files) => {
-                if (err)
-                    return res.status(404).send("Something went wrong, make sure the spotify URL is correct");
+            const zipPath = `${directoryPathUnique}/${name.replace(path.extname(name), '')}.zip`;
 
-                files.forEach((file) => zip.file(file));
+            const output = fs.createWriteStream(zipPath);
+            const archive = archiver('zip', { zlib: { level: 9 } });
+            archive.pipe(output);
+
+            output.on('close', () => {
+                console.log('Finished creating zip');
             });
 
-            zip.generateAsync({type:"blob"})
-                .then((content) => {
-                    saveAs(content, "example.zip");
-                })
-                .catch(() => res.status(404).send("Something went wrong, make sure the spotify URL is correct"));
+            output.on('error', () => {
+                res.status(404).send("Something went wrong, make sure the spotify URL is correct");
+            });
 
-            res.status(200).send("Download completed, sent zip file");
+
+            archive.directory(`${directoryPath}/`, name);
+            archive.pipe(res);
+            archive.finalize();
         }
     });
 }

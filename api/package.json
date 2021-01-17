@@ -11,6 +11,7 @@
   "author": "Giuliopime",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^5.2.0",
     "express": "^4.17.1",
     "jszip": "^3.5.0",
     "mongoose": "^5.11.12"

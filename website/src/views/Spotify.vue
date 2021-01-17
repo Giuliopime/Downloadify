@@ -31,6 +31,8 @@
           </button>
         </div>
       </div>
+
+      <a id="download-a-el" class="hidden"></a>
     </div>
   </div>
 </template>
@@ -58,18 +60,28 @@ export default {
       dlBtn.disabled = true;
       dlBtn.innerText = 'Downloading, please be patient...';
 
-      axios.post(BASEURL + 'spotify', { spotifyURL: spotifyLink })
+      axios.post(BASEURL + 'spotify', { spotifyURL: spotifyLink, responseType: 'blob' })
           .then(async res => {
             // If the request wasn't successful show the error card
             if(res.status !== 200)
               this.showErrorCard();
-            // Otherwise
-            else
-              await this.$router.push({name: 'Home'});
+            else {
+              const binaryData = [];
+              binaryData.push(res.data);
+              const url = window.URL.createObjectURL(new Blob(binaryData, {type: 'application/octet-stream'}));
+              const a = document.getElementById('download-a-el');
+              a.href = url;
 
+              a.download = 'test.zip';
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              alert('your file has downloaded!'); // or you know, something with better UX...
+            }
             restoreDlBtn()
           })
-          .catch(() => {
+          .catch(e => {
+            console.log(e)
             restoreDlBtn()
             this.showErrorCard();
           });
@@ -85,7 +97,6 @@ export default {
 </script>
 
 <style scoped>
-
 .main-content {
   width: 372px;
 }
@@ -96,6 +107,7 @@ export default {
 
 .btn {
   background-color: var(--color-spotify-darker);
+  transition: all 0.3s;
 }
 
 #dl-svg {
