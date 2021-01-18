@@ -1,18 +1,43 @@
-const controller = require('../controllers');
+const userRoutes = require('./usersRoutes');
+const downloadRoutes = require('./downloadRoutes');
+const dbManager = require('../db/dbManager');
 
 module.exports = (app) => {
-    app.route('/login')
-        .get(controller.login);
+    // Default API auth
+    app.use(async (req, res, next) => {
+        let token = req.headers.authorization;
 
-    app.route('/user')
-        .get(controller.getUser);
+        let usedCookies = false;
 
-    app.route('/new-user')
-        .get(controller.newUser);
+        if(!token) {
+            token = req.cookies ? req.cookies.token : null;
+            usedCookies = true;
+        }
 
-    app.route('/spotify')
-        .post(controller.spotify);
+        if(!token)
+            return res.status(401)
+                .send("Token not found, pass it either in the Authorization header or via the 'token' cookie");
 
-    app.route('/youtube')
-        .post(controller.youtube);
+
+        const user = await dbManager.getUser(token);
+        if(!user)
+            return res.status(401)
+                .send("Token not valid");
+
+        res.locals.user = user;
+        res.locals.authViaCookie = usedCookies;
+
+        next();
+    })
+
+    userRoutes(app);
+
+    downloadRoutes(app);
+
+    // Invalid routes
+    app.use((req, res) =>
+        res.status(404).send('"' + req.originalUrl + '" is not a valid route (not found)')
+    );
+
+    return app;
 };
