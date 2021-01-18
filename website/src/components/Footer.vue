@@ -24,6 +24,9 @@ export default {
   letter-spacing: 0.1rem;
   background-color: var(--color-footer-bg);
   transition: background-color var(--transition-speed);
+  -webkit-transition: background-color var(--transition-speed);
+  -moz-transition: background-color var(--transition-speed);
+  -o-transition: background-color var(--transition-speed);
 }
 
 #author {

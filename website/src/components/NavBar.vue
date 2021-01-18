@@ -32,6 +32,9 @@ name: "NavBar",
   padding: 1rem 1.25rem;
   margin-bottom: 5vh;
   transition: all var(--transition-speed);
+  -webkit-transition: all var(--transition-speed);
+  -moz-transition: all var(--transition-speed);
+  -o-transition: all var(--transition-speed);
 }
 
 .logo-item {
@@ -60,6 +63,9 @@ name: "NavBar",
   display: block;
   background: #623CEA;
   transition: var(--transition-speed);
+  -webkit-transition: var(--transition-speed);
+  -moz-transition: var(--transition-speed);
+  -o-transition: var(--transition-speed);
 }
 
 #navbar a:hover .logo-name::after {

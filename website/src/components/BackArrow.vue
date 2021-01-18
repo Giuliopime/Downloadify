@@ -21,6 +21,9 @@ export default {
 .arrow-back-path {
   fill: var(--color-text);
   transition: all var(--transition-speed);
+  -webkit-transition: all var(--transition-speed);
+  -moz-transition: all var(--transition-speed);
+  -o-transition: all var(--transition-speed);
 }
 
 .arrow-back:hover .arrow-back-path {

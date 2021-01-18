@@ -167,6 +167,9 @@ export default {
 .btn {
   background-color: var(--color-spotify-darker);
   transition: all var(--transition-speed);
+  -webkit-transition: all var(--transition-speed);
+  -moz-transition: all var(--transition-speed);
+  -o-transition: all var(--transition-speed);
 }
 
 .btn-icon {

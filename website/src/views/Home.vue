@@ -63,6 +63,9 @@ export default {
   border: 1px var(--color-border) solid;
   border-radius: 0.5rem;
   transition: all var(--transition-speed) linear;
+  -webkit-transition: all var(--transition-speed) linear;
+  -moz-transition: all var(--transition-speed) linear;
+  -o-transition: all var(--transition-speed) linear;
   opacity: 0.9;
 }
 .platform-logo {

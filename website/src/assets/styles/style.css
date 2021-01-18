@@ -86,6 +86,9 @@ html, body {
     color: var(--color-text);
     background: var(--color-main-bg);
     transition: background-color var(--transition-speed);
+    -webkit-transition: background-color var(--transition-speed);
+    -moz-transition: background-color var(--transition-speed);
+    -o-transition: background-color var(--transition-speed);
 }
 
 body {
@@ -141,9 +144,12 @@ h1 {
     border: 1px rgba(27, 31, 35, 0.15) solid;
     border-radius: 0.4rem;
     background-color: var(--color-primary);
-    transition: all var(--transition-speed);
     outline:none;
     color: #fff;
+    transition: all var(--transition-speed);
+    -webkit-transition: all var(--transition-speed);
+    -moz-transition: all var(--transition-speed);
+    -o-transition: all var(--transition-speed);
 }
 .btn:hover {
     opacity: 0.9;

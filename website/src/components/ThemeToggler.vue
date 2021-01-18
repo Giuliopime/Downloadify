@@ -53,11 +53,17 @@ export default {
   height: 1.56rem;
   stroke: var(--color-text);
   transition: all var(--transition-speed);
+  -webkit-transition: all var(--transition-speed);
+  -moz-transition: all var(--transition-speed);
+  -o-transition: all var(--transition-speed);
   fill: var(--color-nav-bg);
 }
 
 .fill-content {
   transition: fill var(--transition-speed);
+  -webkit-transition: fill var(--transition-speed);
+  -moz-transition: fill var(--transition-speed);
+  -o-transition: fill var(--transition-speed);
 }
 
 .color-mode-btn:hover > svg {
