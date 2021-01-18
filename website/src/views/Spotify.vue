@@ -148,11 +148,11 @@ export default {
 
 <style scoped>
 .main-content {
-  width: 372px;
+  width: 23.25rem;
 }
 
 .input-field {
-  margin: 5px 0 30px 0;
+  margin: 0.31rem 0 1.875rem 0;
 }
 
 .btn {
@@ -161,11 +161,11 @@ export default {
 }
 
 .btn-icon {
-  height: 16px;
-  margin-right: 8px;
+  height: 1rem;
+  margin-right: 0.5rem;
 }
 #loading-svg {
-  height: 20px;
+  height: 1.25rem;
   background: none;
   display: block;
   shape-rendering: auto;

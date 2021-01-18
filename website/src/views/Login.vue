@@ -103,20 +103,20 @@ export default {
 <style scoped>
 .header {
   width: 100%;
-  padding: 32px 0 24px 0;
+  padding: 2rem 0 1.5rem 0;
 }
 .header-container {
   text-align: center;
 }
 .header-logo {
-  height: 70px;
+  height: 4.37rem;
 }
 
 .main-content {
-  width: 372px;
+  width: 23.25rem;
 }
 
 .input-field {
-  margin: 5px 0 30px 0;
+  margin: 0.31rem 0 1.875rem 0;
 }
 </style>

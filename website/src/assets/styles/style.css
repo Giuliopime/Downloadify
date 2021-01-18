@@ -98,7 +98,7 @@ a {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 1.7rem;
     font-weight: 300;
     letter-spacing: -0.5px;
     margin-top: 0;
@@ -117,10 +117,10 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    font-size: 14px;
+    padding: 1.25rem;
+    font-size: 0.9rem;
     border: 1px solid var(--color-border);
-    border-radius: 5px;
+    border-radius: 0.33rem;
     background-color: var(--color-card-bg);
 }
 
@@ -130,12 +130,12 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 16px;
-    line-height: 20px;
+    padding: 0.33rem 1rem;
+    line-height:1.25rem;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 0.9rem;
     border: 1px rgba(27, 31, 35, 0.15) solid;
-    border-radius: 6px;
+    border-radius: 0.4rem;
     background-color: var(--color-primary);
     transition: all var(--transition-speed);
     outline:none;
@@ -149,10 +149,11 @@ h1 {
 
 .input-field {
     width: 100%;
-    padding: 5px 12px;
-    line-height: 20px;
+    padding: 0.33rem 0.75rem;
+    line-height: 1.2rem;
+    font-size: 0.75rem;
     vertical-align: middle;
-    border-radius: 6px;
+    border-radius: 0.4rem;
     border: 1px solid var(--color-input-border);
     background-color: var(--color-card-bg);
     box-sizing: border-box;
@@ -168,12 +169,12 @@ h1 {
     align-self: flex-start;
     width: 100%;
     font-weight: 600;
-    margin-bottom: 7px;
+    margin-bottom: 0.4rem;
 }
 
 .label-link {
     float: right;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-link);
     text-decoration: none;
     font-weight: 600;
@@ -192,7 +193,7 @@ h1 {
 
 .main-header {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     text-align: center;
 }
 
@@ -203,5 +204,22 @@ h1 {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    padding: 0 16px 0 16px;
+    padding: 0 1rem 0 1rem;
+}
+
+/* Responsiveness */
+@media screen and (min-width: 1700px) {
+    html {
+        font-size: 25px !important;
+    }
+}
+@media screen and (min-width: 2400px) {
+    html {
+        font-size: 35px !important;
+    }
+}
+@media screen and (min-width: 3000px) {
+    html {
+        font-size: 45px !important;
+    }
 }

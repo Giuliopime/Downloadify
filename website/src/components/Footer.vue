@@ -20,8 +20,8 @@ export default {
   justify-content: center;
   width: 100%;
   text-align: center;
-  font-size: 10px;
-  letter-spacing: 1.5px;
+  font-size: 0.62rem;
+  letter-spacing: 0.1rem;
   background-color: var(--color-footer-bg);
   transition: background-color var(--transition-speed);
 }
@@ -44,8 +44,8 @@ export default {
 }
 
 #author-icon {
-  height: 14px;
-  margin-right: 10px;
+  height: 0.87rem;
+  margin-right: 0.625rem;
 }
 .icon-fill-section {
   fill: var(--color-text);

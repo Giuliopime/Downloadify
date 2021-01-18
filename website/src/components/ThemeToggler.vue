@@ -49,8 +49,8 @@ export default {
 }
 
 .color-mode-btn > svg {
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.56rem;
+  height: 1.56rem;
   stroke: var(--color-text);
   transition: all var(--transition-speed);
   fill: var(--color-nav-bg);

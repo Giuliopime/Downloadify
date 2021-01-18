@@ -155,24 +155,24 @@ export default {
 
 <style scoped>
 .main-content {
-  width: 372px;
+  width: 23.5rem;
 }
 
 .input-field {
-  margin: 5px 0 6px 0;
+  margin: 0.31rem 0 0.375rem 0;
 }
 
 .cb-field {
   display: flex;
   align-items: center;
   align-self: flex-start;
-  margin-bottom: 30px;
-  margin-left: 4px;
-  font-size: 12px;
+  margin-bottom: 1.875rem;
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
 }
 
 #only-audio-cb {
-  margin-right: 5px;
+  margin-right: 0.31rem;
   border: 1px var(--color-input-border) solid !important;
 }
 
@@ -182,11 +182,11 @@ export default {
 }
 
 .btn-icon {
-  height: 16px;
-  margin-right: 8px;
+  height: 1rem;
+  margin-right: 0.5rem;
 }
 #loading-svg {
-  height: 20px;
+  height: 1.25rem;
   background: none;
   display: block;
   shape-rendering: auto;

@@ -24,13 +24,12 @@ name: "NavBar",
 
 #navbar {
   width: 100%;
-  height: 12vh;
   background-color: var(--color-nav-bg);
   border-bottom: var(--card-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 20px;
+  padding: 1rem 1.25rem;
   margin-bottom: 5vh;
   transition: all var(--transition-speed);
 }
@@ -42,7 +41,7 @@ name: "NavBar",
 
 
 .logo-image {
-  height: 8vh;
+  height: 3rem;
   margin-right: 0.7rem;
 }
 

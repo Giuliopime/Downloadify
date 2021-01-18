@@ -28,10 +28,10 @@ export default {
 }
 #wrapper {
   min-height: 100%;
-  margin-bottom: -50px;
+  margin-bottom: -3.125rem;
 }
 #footer,
 #push {
-  height: 50px;
+  height: 3.125rem;
 }
 </style>

@@ -11,8 +11,6 @@
         <svg
             class="err-icon"
             viewBox="0 0 16 16"
-            width="16"
-            height="16"
             aria-hidden="true"
         >
           <path
@@ -44,11 +42,11 @@ export default {
 .err-card {
   width: 100%;
   background-color: var(--color-error-bg);
-  padding: 10px 20px;
-  margin-bottom: 15px;
-  font-size: 13px;
+  padding: 0.625rem 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.81rem;
   border: 1px var(--color-error-border) solid;
-  border-radius: 5px;
+  border-radius: 0.3rem;
 }
 
 .err-card-content {
@@ -60,12 +58,14 @@ export default {
 
 .err-icon {
   fill: var(--color-error-icon);
+  width: 1rem;
+  height: 1rem;
 }
 
 .err-card-btn {
   background: none;
   border: none;
-  margin-top: 2px;
+  margin-top: 0.1rem;
 }
 
 .err-icon:hover {

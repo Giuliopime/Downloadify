@@ -11,8 +11,6 @@
         <svg
             class="msg-icon"
             viewBox="0 0 16 16"
-            width="16"
-            height="16"
             aria-hidden="true"
         >
           <path
@@ -44,9 +42,9 @@ export default {
 .msg-card {
   width: 100%;
   background-color: var(--color-info-bg);
-  padding: 10px 20px;
-  margin-bottom: 15px;
-  font-size: 13px;
+  padding: 0.625rem 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.81rem;
   border: 1px var(--color-info-border) solid;
   border-radius: 5px;
 }
@@ -59,12 +57,14 @@ export default {
 
 .msg-icon {
   fill: var(--color-info-icon);
+  width: 1rem;
+  height: 1rem;
 }
 
 .msg-card-btn {
   background: none;
   border: none;
-  margin-top: 2px;
+  margin-top: 0.1rem;
 }
 
 .msg-icon:hover {
