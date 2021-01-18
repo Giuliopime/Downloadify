@@ -8,9 +8,9 @@ const spotifyUri = require('spotify-uri');
 const downloadIDS = [];
 
 module.exports = {
-    newDownload(spotifyURL, youtubeURL) {
+    newDownload(spotifyURL, youtubeURL, audioOnly) {
         const downloadID = uuidv4();
-        downloadIDS.push({ downloadID: downloadID, spotifyURL: spotifyURL, youtubeURL: youtubeURL, state: "Processing..."});
+        downloadIDS.push({ downloadID: downloadID, spotifyURL: spotifyURL, youtubeURL: youtubeURL, audioOnly: audioOnly, state: "Processing..."});
         setTimeout(() => startDownload(downloadID), 0);
 
         return downloadID;
@@ -47,6 +47,26 @@ const startDownload = (downloadID) => {
     } else {
         const URL = downloadData.youtubeURL;
         const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('youtube-downloads', downloadID);
+
+        /*
+        Run youtube-dl command
+        -o is the output
+        --no-playlist makes it so if a yt link includes a playlist (other than a video) it downloads only the video and not the full playlist
+        -f bestaudio[ext=m4a] downloads only the audio, in m4a format
+         */
+        exec(`youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist ${downloadData.audioOnly ? '-f bestaudio[ext=m4a]' : ''} ${URL}`, (error) => {
+            if (error) {
+                downloadData.error = true;
+                return;
+            }
+
+            downloadData.finished = true;
+            downloadData.state = "Receiving zip...";
+
+            downloadData.directoryPathUnique = directoryPathUnique;
+            downloadData.directoryPath = directoryPath;
+            downloadData.zipName = fs.readdirSync(directoryPath)[0];
+        });
     }
 }
 

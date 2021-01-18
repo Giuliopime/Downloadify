@@ -91,28 +91,15 @@ REQUIRES YOUTUBE-DL (https://youtube-dl.org/)
  */
 exports.youtube = async (req, res) => {
     try {
-        let youtubeURL = req.body.youtubeURL;
+        const youtubeURL = req.body.youtubeURL;
         const audioOnly = req.body.audioOnly;
 
         if(!youtubeURL)
             return res.status(404).send("A valid youtube URL hasn't been provided, please pass it in the request body");
 
-        const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('youtube-downloads');
+        const downloadID = downloadsHandler.newDownload(null, youtubeURL, audioOnly);
 
-        /*
-        Run youtube-dl command
-        -o is the output
-        --no-playlist makes it so if a yt link includes a playlist (other than a video) it downloads only the video and not the full playlist
-        -f bestaudio[ext=m4a] downloads only the audio, in m4a format
-         */
-        exec(`youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist ${audioOnly ? '-f bestaudio[ext=m4a]' : ''} ${youtubeURL}`, (error) => {
-            if (error) {
-                console.log(error)
-                return res.status(404).send("Something went wrong, make sure the youtube URL is correct");
-            }
-            else
-                saveAsZipAndSendRes(directoryPathUnique, directoryPath, fs.readdirSync(directoryPath)[0], res);
-        });
+        res.status(202).json({ downloadID: downloadID });
     } catch (e) {
         handleError(res, e);
     }
