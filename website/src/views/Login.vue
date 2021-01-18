@@ -30,6 +30,7 @@
             autocomplete="token"
           />
           <button
+            type="button"
             class="btn"
             id="submit-btn"
             v-on:click="logIn"
@@ -51,12 +52,23 @@ const { BASEURL } = require('../../config.json');
 export default {
   name: "Login",
   components: {ErrorCard, MessageCard},
+  mounted() {
+    document.getElementById('token-field').addEventListener("keydown", event => {
+      if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
+        event.preventDefault();
+        this.logIn();
+      }
+    });
+  },
   methods: {
     showErrorCard() {
       document.getElementsByClassName('err-card')[0].classList.remove('hidden')
     },
     showMessageCard() {
       document.getElementsByClassName('msg-card')[0].classList.remove('hidden');
+    },
+    enterEvent() {
+
     },
     async logIn() {
       // Disable the submit button for 0.3 seconds to prevent spam and to show the Signing in... text

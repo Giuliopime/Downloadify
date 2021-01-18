@@ -77,7 +77,7 @@ exports.spotify = async (req, res) => {
             return res.status(404).send("A valid spotify URL hasn't been provided, please pass it in the request body");
 
         const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('spotify-downloads');
-        console.log(directoryPath);
+
         // Execute spotifydl npm command
         exec(`spotifydl ${spotifyURL} -o ${directoryPath}`, (error) => {
             if (error) {
