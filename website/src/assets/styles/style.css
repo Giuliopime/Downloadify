@@ -111,6 +111,10 @@ h1 {
     display: none !important;
 }
 
+.hidden-present {
+    visibility: hidden;
+}
+
 .card {
     width: 100%;
     display: flex;
@@ -195,6 +199,9 @@ h1 {
     width: 100%;
     margin-bottom: 1.25rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .main-content {
@@ -210,7 +217,7 @@ h1 {
 /* Responsiveness */
 @media screen and (min-width: 1700px) {
     html {
-        font-size: 25px !important;
+        font-size: 20px !important;
     }
 }
 @media screen and (min-width: 2400px) {

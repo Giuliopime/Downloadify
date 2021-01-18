@@ -3,7 +3,11 @@
     <NavBar />
     <div class="main">
       <div class="main-header">
+        <router-link to="/">
+          <BackArrow />
+        </router-link>
         <h1>Spotify Downloader</h1>
+        <BackArrow class="hidden-present"/>
       </div>
       <div class="main-content">
         <ErrorCard  err="An error occurred, make sure the URL is correct."/>
@@ -70,10 +74,11 @@ const { BASEURL } = require('../../config.json');
 import NavBar from "@/components/NavBar";
 import ErrorCard from "@/components/ErrorCard";
 import MessageCard from "@/components/MessageCard";
+import BackArrow from "@/components/BackArrow";
 
 export default {
   name: "Spotify",
-  components: {ErrorCard, NavBar, MessageCard},
+  components: {ErrorCard, NavBar, MessageCard, BackArrow},
   /*
   Can be added to prevent exiting the page while downloading
   created() {
@@ -149,6 +154,10 @@ export default {
 <style scoped>
 .main-content {
   width: 23.25rem;
+}
+
+.arrow-back {
+  margin-top: 0.1rem;
 }
 
 .input-field {
