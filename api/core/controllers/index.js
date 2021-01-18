@@ -149,6 +149,11 @@ const sendZip = (downloadData, res) => {
         fs.rmdirSync(directoryPathUnique, { recursive: true });
     });
 
+    archive.on('error', err => {
+        console.log(err.message);
+        fs.rmdirSync(directoryPathUnique, { recursive: true });
+    });
+
     archive.directory(`${directoryPath}/`, zipName);
     archive.pipe(res);
     archive.finalize();
