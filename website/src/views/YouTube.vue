@@ -48,11 +48,11 @@
                   <animate attributeName="fill-opacity" repeatCount="indefinite" dur="0.819672131147541s" values="0;1;1" keyTimes="0;0.2;1" begin="0s"></animate>
                 </circle>
               </g><g transform="translate(-15 0)">
-              <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#623cea" transform="rotate(90 50 50)"></path>
-              <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#623cea">
+              <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#FFBE0B" transform="rotate(90 50 50)"></path>
+              <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#FFBE0B">
                 <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="0.819672131147541s" values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
               </path>
-              <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#623cea">
+              <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#FFBE0B">
                 <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="0.819672131147541s" values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
               </path>
             </g>
@@ -116,9 +116,10 @@ export default {
 
       this.showDownloadingStateBtn();
 
+
       axios({
         method: 'post',
-        url: BASEURL + 'spotify',
+        url: BASEURL + 'youtube',
         responseType: 'arraybuffer',
         data: {
           youtubeURL: youtubeLink,

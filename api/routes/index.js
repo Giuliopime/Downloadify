@@ -8,8 +8,11 @@ module.exports = (app) => {
         .get(controller.getUser);
 
     app.route('/new-user')
-        .get(controller.newUser)
+        .get(controller.newUser);
 
     app.route('/spotify')
-        .post(controller.spotify)
+        .post(controller.spotify);
+
+    app.route('/youtube')
+        .post(controller.youtube);
 };

@@ -14,7 +14,8 @@
     "archiver": "^5.2.0",
     "express": "^4.17.1",
     "jszip": "^3.5.0",
-    "mongoose": "^5.11.12"
+    "mongoose": "^5.11.12",
+    "youtube-dl": "^3.1.0"
   },
   "devDependencies": {
     "cookie-parser": "^1.4.5",
