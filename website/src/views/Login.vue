@@ -90,7 +90,7 @@ export default {
           this.showErrorCard();
         // Otherwise the token was correct
         else
-          await this.$router.push({name: 'Home'});
+          await this.$router.go(-1);
       })
       .catch(() => {
         this.showErrorCard();
