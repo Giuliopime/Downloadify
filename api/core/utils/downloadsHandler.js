@@ -76,7 +76,7 @@ const setupDirectoriesForDownload = (mainDirectoryName, downloadID) => {
         fs.mkdirSync(path.join(__dirname, '..', '..') + '/' + mainDirectoryName)
 
     // Create unique directory to put files in
-    const directoryPathUnique = path.join(__dirname, '..', mainDirectoryName) + '/' + downloadID;
+    const directoryPathUnique = path.join(__dirname, '..', '..', mainDirectoryName) + '/' + downloadID;
     fs.mkdirSync(directoryPathUnique);
 
     // Create directory to put downloads in
