@@ -22,8 +22,6 @@ app.use(async (req, res, next) => {
         usedCookies = true;
     }
 
-
-
     if(!token)
         return res.status(401)
             .send("Token not found, pass it either in the Authorization header or via the 'token' cookie");

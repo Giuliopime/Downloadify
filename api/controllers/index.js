@@ -16,9 +16,9 @@ exports.login = async (req, res) => {
 
         const user = res.locals.user;
 
-        res.cookie('token', user.token, {httpOnly: true});
+        res.cookie('token', user.token, { httpOnly: true });
         res.status(200)
-            .json({username: user.username});
+            .json({administrator: user.administrator});
 
     } catch (e) {
         handleError(res, e);
@@ -31,7 +31,7 @@ exports.getUser = async (req, res) => {
         const user = res.locals.user;
 
         res.status(200)
-            .json({username: user.username, administrator: user.administrator});
+            .json({administrator: user.administrator});
 
     } catch (e) {
         handleError(res, e);
@@ -77,7 +77,7 @@ exports.spotify = async (req, res) => {
             return res.status(404).send("A valid spotify URL hasn't been provided, please pass it in the request body");
 
         const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('spotify-downloads');
-
+        console.log(directoryPath);
         // Execute spotifydl npm command
         exec(`spotifydl ${spotifyURL} -o ${directoryPath}`, (error) => {
             if (error) {

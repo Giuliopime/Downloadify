@@ -31,9 +31,6 @@ module.exports = {
         }
         return await new userSchema(user).save().catch(console.error);
     },
-    modifyUsername(token, username) {
-        userSchema.findOneAndUpdate({ token: token}, { $set: { 'username': username}})
-    },
     async disconnect() {
         await mongoose.connection.close();
     }
