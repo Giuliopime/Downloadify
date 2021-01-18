@@ -4,7 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const router = express.Router();
 const routes = require("./routes");
-const { APIPORT } = require('./config.js');
+const { APIPORT } = require('../config.js');
 
 const app = express();
 app.use(cookieParser());

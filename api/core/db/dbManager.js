@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const userSchema = require("./schemas/userSchema");
-const { DBNAME } = require("../config");
+const { DBNAME } = require("../../config");
 
 const dbOptions = {
     useNewUrlParser: true,

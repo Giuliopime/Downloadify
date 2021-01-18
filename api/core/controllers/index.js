@@ -1,9 +1,9 @@
-const dbManager = require('../db/dbManager');
 const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
-const { v4: uuidv4 } = require('uuid');
 const archiver = require('archiver');
+const dbManager = require('../db/dbManager');
+const downloadsHandler = require('../utils/downloadsHandler');
 
 // Logs in the user and saves the token in a cookie (for the website), use /user if you want to use the APIs manually instead
 exports.login = async (req, res) => {
@@ -67,7 +67,7 @@ FOLLOWING CONTROLLERS REQUIRE FFMPEG
  */
 
 /*
-REQUIRES SPOTDL NPM PACKAGE INSTALLED GLOBALLY
+REQUIRES SPOTDL NPM PACKAGE INSTALLED GLOBALLY (npm i -g spotify-dl)
  */
 exports.spotify = async (req, res) => {
     try {
@@ -76,17 +76,10 @@ exports.spotify = async (req, res) => {
         if(!spotifyURL)
             return res.status(404).send("A valid spotify URL hasn't been provided, please pass it in the request body");
 
-        const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('spotify-downloads');
+        const downloadID = downloadsHandler.newDownload(spotifyURL, null);
 
-        // Execute spotifydl npm command
-        exec(`spotifydl ${spotifyURL} -o ${directoryPath}`, (error) => {
-            if (error) {
-                console.log(error)
-                return res.status(404).send("Something went wrong, make sure the spotify URL is correct");
-            }
+        res.status(202).json({ downloadID: downloadID });
 
-            saveAsZipAndSendRes(directoryPathUnique, directoryPath, fs.readdirSync(directoryPath)[0], res);
-        });
     } catch (e) {
         handleError(res, e);
     }
@@ -125,36 +118,40 @@ exports.youtube = async (req, res) => {
     }
 }
 
-function handleError(res, e) {
+exports.downloadStatus = (req, res) => {
+    try {
+        res.status(202).json(downloadsHandler.getDownloadStatus(req.params.id));
+    } catch (e) {
+        handleError(res, e);
+    }
+}
+
+exports.getDownloadedData = (req, res) => {
+    try {
+        const downloadData = downloadsHandler.getDownloadStatus(req.params.id);
+        if(!downloadData.finished)
+            return res.status(404).send('Download data is not yet available');
+
+        sendZip(downloadData, res);
+    } catch (e) {
+        handleError(res, e);
+    }
+}
+
+const handleError = (res, e) => {
     console.log(e);
     res.status(500)
         .send(`Something bad happened ¯\_(ツ)_/¯`);
 }
 
-function setupDirectoriesForDownload(mainDirectoryName) {
-    // Create spotify-downloads & youtube-downloads folder if it doesn't yet exist
-    if (!fs.existsSync(path.join(__dirname, '..', mainDirectoryName)))
-        fs.mkdirSync(path.join(__dirname, '..') + '/' + mainDirectoryName)
+const sendZip = (downloadData, res) => {
+    let { directoryPathUnique, directoryPath, zipName } = downloadData;
 
-
-    // Create unique directory to put files in
-    const randValue = uuidv4();
-    const directoryPathUnique = path.join(__dirname, '..', mainDirectoryName) + '/' + randValue;
-    fs.mkdirSync(directoryPathUnique);
-
-    // Create directory to put downloads in
-    const directoryPath = directoryPathUnique + '/downloads';
-    fs.mkdirSync(directoryPath)
-
-    return {
-        directoryPathUnique: directoryPathUnique,
-        directoryPath: directoryPath
-    }
-}
-
-function saveAsZipAndSendRes(directoryPathUnique, directoryPath, zipName, res) {
     // Change the zip name to be asci only characters
     zipName = zipName.replace(path.extname(zipName), '').replace(/[^\x00-\x7F]/g, '');
+    console.log('Created zip: ' +zipName);
+
+    res.set('Content-Type', 'application/zip');
     res.set('zip-file-name', zipName);
 
     // Zip all the content downloaded in the downloads folder

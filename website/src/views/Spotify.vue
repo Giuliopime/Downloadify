@@ -105,41 +105,79 @@ export default {
       const dlBtn = document.getElementById('download-btn');
       dlBtn.disabled = true;
       document.getElementById('dl-svg').classList.add('hidden');
-      document.getElementById('btn-text').textContent = 'Downloading, please be patient...';
       document.getElementById('loading-svg').classList.remove('hidden');
     },
+    changeDownloadBtnText(text) {
+      document.getElementById('btn-text').textContent = text;
+    },
+    hideMessages() {
+      document.getElementsByClassName('err-card')[0].classList.add('hidden');
+      document.getElementsByClassName('msg-card')[0].classList.add('hidden');
+    },
     sendDownloadRequest() {
+      this.hideMessages();
       const spotifyLink = document.getElementById('url-field').value;
 
       if(!spotifyLink)
         return this.showErrorCard();
 
       this.showDownloadingStateBtn();
+      this.changeDownloadBtnText("Downloading...");
 
       axios({
         method: 'post',
         url: BASEURL + 'spotify',
-        responseType: 'arraybuffer',
         data: {
           spotifyURL: spotifyLink
         }
       })
           .then(async res => {
-            // If the request wasn't successful show the error card
-            if(res.status !== 200)
-              this.showErrorCard();
-            else {
-              const blob = new Blob([res.data], {type: "zip"});
-              const url = window.URL.createObjectURL(blob);
-              const a = document.getElementById('download-a-el');
-              a.href = url;
+            const downloadID = res.data.downloadID;
 
-              a.download = res.headers['zip-file-name'] + '.zip';
-              a.click();
-              window.URL.revokeObjectURL(url);
-              this.showMessageCard();
-            }
-            this.showDownloadStateBtn();
+            const checkStateInterval = setInterval(() => {
+              axios(BASEURL + 'download-status/'+downloadID)
+                  .then(res => {
+                    const downloadData = res.data;
+
+                    this.changeDownloadBtnText(downloadData.state);
+
+                    if(downloadData.error) {
+                      clearInterval(checkStateInterval);
+                      this.showDownloadStateBtn();
+                      this.showErrorCard();
+                    }
+                    else if(downloadData.finished) {
+                      clearInterval(checkStateInterval);
+                      axios({
+                        url: BASEURL + 'get-download-data/' + downloadID,
+                        responseType: 'arraybuffer'
+                      })
+                        .then(res => {
+                          const blob = new Blob([res.data], {type: res.headers['Content-Type']});
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.getElementById('download-a-el');
+                          a.href = url;
+
+                          a.download = res.headers['zip-file-name'] + '.zip';
+                          a.click();
+                          window.URL.revokeObjectURL(url);
+                          this.showMessageCard();
+                          this.showDownloadStateBtn();
+                        })
+                        .catch(e => {
+                          console.log(e)
+                          this.showDownloadStateBtn();
+                          this.showErrorCard();
+                        });
+                    }
+                  })
+                  .catch(e => {
+                    clearInterval(checkStateInterval);
+                    console.log(e)
+                    this.showDownloadStateBtn();
+                    this.showErrorCard();
+                  });
+            }, 3000);
           })
           .catch(e => {
             console.log(e)

@@ -132,20 +132,15 @@ export default {
         }
       })
           .then(async res => {
-            // If the request wasn't successful show the error card
-            if(res.status !== 200)
-              this.showErrorCard();
-            else {
-              const blob = new Blob([res.data], {type: "zip"});
-              const url = window.URL.createObjectURL(blob);
-              const a = document.getElementById('download-a-el');
-              a.href = url;
+            const blob = new Blob([res.data], {type: "zip"});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.getElementById('download-a-el');
+            a.href = url;
 
-              a.download = res.headers['zip-file-name'] + '.zip';
-              a.click();
-              window.URL.revokeObjectURL(url);
-              this.showMessageCard();
-            }
+            a.download = res.headers['zip-file-name'] + '.zip';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            this.showMessageCard();
             this.showDownloadStateBtn();
           })
           .catch(e => {

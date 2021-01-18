@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "jszip": "^3.5.0",
     "mongoose": "^5.11.12",
+    "spotify-uri": "^2.1.0",
     "youtube-dl": "^3.1.0"
   },
   "devDependencies": {
