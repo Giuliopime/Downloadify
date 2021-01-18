@@ -29,8 +29,7 @@ module.exports = {
             token: token,
             administrator: admin
         }
-        const userSaved = await new userSchema(user).save().catch(console.error)
-        return userSaved ? true : false;
+        return await new userSchema(user).save().catch(console.error);
     },
     modifyUsername(token, username) {
         userSchema.findOneAndUpdate({ token: token}, { $set: { 'username': username}})
