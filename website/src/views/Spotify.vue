@@ -122,7 +122,7 @@ export default {
         return this.showErrorCard();
 
       this.showDownloadingStateBtn();
-      this.changeDownloadBtnText("Downloading...");
+      this.changeDownloadBtnText("Processing...");
 
       axios({
         method: 'post',
@@ -135,21 +135,33 @@ export default {
             const downloadID = res.data.downloadID;
 
             const checkStateInterval = setInterval(() => {
-              axios(BASEURL + 'download-status/'+downloadID)
+              axios(BASEURL + 'download-info/'+downloadID)
                   .then(res => {
-                    const downloadData = res.data;
+                    const downloadInfo =   res.data;
 
-                    this.changeDownloadBtnText(downloadData.state);
+                    let downloadState;
+                    switch (downloadInfo.state) {
+                      case 1:
+                        downloadState = "Downloading....";
+                        break;
+                      case 2:
+                        downloadState = "Receiving zip...";
+                        break;
+                      default:
+                        downloadState = "Processing...";
+                    }
 
-                    if(downloadData.error) {
+                    this.changeDownloadBtnText(downloadState);
+
+                    if(downloadInfo.errored) {
                       clearInterval(checkStateInterval);
                       this.showDownloadStateBtn();
                       this.showErrorCard();
                     }
-                    else if(downloadData.finished) {
+                    else if(downloadInfo.completed) {
                       clearInterval(checkStateInterval);
                       axios({
-                        url: BASEURL + 'get-download-data/' + downloadID,
+                        url: BASEURL + 'download-data/' + downloadID,
                         responseType: 'arraybuffer'
                       })
                         .then(res => {

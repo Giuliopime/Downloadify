@@ -96,12 +96,7 @@ export default {
           Authorization: token
         }
       })
-      .then(async res => {
-        // If the request wasn't successful the token was invalid, so show an error
-        if(res.status !== 200)
-          this.showErrorCard();
-        // Otherwise the token was correct
-        else
+      .then(async () => {
           await this.$router.push({name: 'Home'});
       })
       .catch(() => {
