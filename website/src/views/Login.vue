@@ -97,11 +97,19 @@ export default {
         }
       })
       .then(async () => {
-          await this.$router.push({name: 'Home'});
+        const redirect = getUrlParameter('redirect');
+        await this.$router.push({ path: redirect ? redirect : '/'});
       })
       .catch(() => {
         this.showErrorCard();
       });
+
+      const getUrlParameter = (name) => {
+        name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results ? decodeURIComponent(results[1].replace(/\+/g, ' ')) : null;
+      };
     }
   }
 };

@@ -57,13 +57,22 @@ router.beforeEach((to, from, next) => {
       axios(BASEURL + 'user')
           .then(res => {
             if(res.status !== 200)
-              next({name: 'Login'})
+              next({
+                path: '/login',
+                query: { redirect: to.path }
+              })
             else
               next()
           })
-          .catch(() => next({name: 'Login'}))
+          .catch(() => next({
+            path: '/login',
+            query: { redirect: to.path }
+          }));
     } catch {
-      next({name: 'Login'});
+      next({
+        path: '/login',
+        query: { redirect: to.path }
+      });
     }
   } else {
     next();
