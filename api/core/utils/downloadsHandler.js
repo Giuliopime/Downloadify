@@ -1,73 +1,78 @@
 const fs = require('fs');
 const path = require('path');
 const { exec } = require("child_process");
-const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const spotifyUri = require('spotify-uri');
 
-const downloadIDS = [];
+const downloads = [];
 
 module.exports = {
     newDownload(spotifyURL, youtubeURL, audioOnly) {
         const downloadID = uuidv4();
-        downloadIDS.push({ downloadID: downloadID, spotifyURL: spotifyURL, youtubeURL: youtubeURL, audioOnly: audioOnly, state: "Processing..."});
+        const downloadInfo = {
+            downloadID: downloadID,
+            spotifyURL: spotifyURL,
+            youtubeURL: youtubeURL,
+            audioOnly: audioOnly,
+            state: 0,
+            errored: false,
+            completed: false,
+        }
+        downloads.push(downloadInfo);
         setTimeout(() => startDownload(downloadID), 0);
 
         return downloadID;
     },
-    getDownloadStatus(downloadID) {
-        return downloadIDS[downloadIDS.findIndex(data => data.downloadID === downloadID)];
+    getDownloadInfo(downloadID) {
+        return downloads[downloads.findIndex(data => data.downloadID === downloadID)];
     },
 }
 
 
 const startDownload = (downloadID) => {
-    const downloadData = downloadIDS[downloadIDS.findIndex(data => data.downloadID === downloadID)];
+    const downloadInfo = downloads[downloads.findIndex(data => data.downloadID === downloadID)];
 
-    if(downloadData.spotifyURL) {
-        let URL = downloadData.spotifyURL;
-        try { URL = spotifyUri.formatOpenURL(downloadData.spotifyURL); } catch {}
+    let  mainDirectoryName, URL;
 
-        const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('spotify-downloads', downloadID);
+    if(downloadInfo.spotifyURL) {
+        mainDirectoryName = 'spotify-downloads';
 
-        downloadData.state = "Downloading..."
-        exec(`spotifydl ${URL} -o ${directoryPath}`, (error) => {
-            if (error) {
-                downloadData.error = true;
-                return;
-            }
+        URL = downloadInfo.spotifyURL;
+        try { URL = spotifyUri.formatOpenURL(downloadInfo.spotifyURL); } catch {}
 
-            downloadData.finished = true;
-            downloadData.state = "Receiving zip...";
-
-            downloadData.directoryPathUnique = directoryPathUnique;
-            downloadData.directoryPath = directoryPath;
-            downloadData.zipName = fs.readdirSync(directoryPath)[0];
-        });
     } else {
-        const URL = downloadData.youtubeURL;
-        const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload('youtube-downloads', downloadID);
-
-        /*
-        Run youtube-dl command
-        -o is the output
-        --no-playlist makes it so if a yt link includes a playlist (other than a video) it downloads only the video and not the full playlist
-        -f bestaudio[ext=m4a] downloads only the audio, in m4a format
-         */
-        exec(`youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist ${downloadData.audioOnly ? '-f bestaudio[ext=m4a]' : ''} ${URL}`, (error) => {
-            if (error) {
-                downloadData.error = true;
-                return;
-            }
-
-            downloadData.finished = true;
-            downloadData.state = "Receiving zip...";
-
-            downloadData.directoryPathUnique = directoryPathUnique;
-            downloadData.directoryPath = directoryPath;
-            downloadData.zipName = fs.readdirSync(directoryPath)[0];
-        });
+        mainDirectoryName = 'youtube-downloads';
+        URL = downloadInfo.youtubeURL;
     }
+
+    const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload(mainDirectoryName, downloadID);
+
+    /*
+       youtube-dl command
+       -o is the output
+       --no-playlist makes it so if a yt link includes a playlist (other than a video) it downloads only the video and not the full playlist
+       -f bestaudio[ext=m4a] downloads only the audio, in m4a format
+    */
+    const shellCommand = downloadInfo.spotifyURL ?
+        `spotifydl ${URL} -o ${directoryPath}` :
+        `youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist ${downloadInfo.audioOnly ? '-f bestaudio[ext=m4a]' : ''} ${URL}`;
+
+    downloadInfo.state = 1;
+
+    exec(shellCommand, (error) => {
+        if (error) {
+            downloadInfo.errored = true;
+            fs.rmdirSync(directoryPathUnique, { recursive: true });
+            return;
+        }
+
+        downloadInfo.completed = true;
+        downloadInfo.state = 2;
+
+        downloadInfo.directoryPathUnique = directoryPathUnique;
+        downloadInfo.directoryPath = directoryPath;
+        downloadInfo.zipName = fs.readdirSync(directoryPath)[0];
+    });
 }
 
 const setupDirectoriesForDownload = (mainDirectoryName, downloadID) => {

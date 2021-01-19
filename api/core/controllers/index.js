@@ -1,4 +1,3 @@
-const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const archiver = require('archiver');
@@ -9,9 +8,9 @@ const downloadsHandler = require('../utils/downloadsHandler');
 exports.login = async (req, res) => {
     try {
         // Login can only be made via authorization header
-        if(res.locals.authViaCookie) {
+        if(res.locals.authViaCookie)    {
             return res.status(401)
-                .send("Token not found, pass it in the Authorization header");
+                .json({ message: "Token not found, pass it in the Authorization header" });
         }
 
         const user = res.locals.user;
@@ -46,14 +45,14 @@ exports.newUser = async (req, res) => {
         // Check if user has permissions to create new users
         if(!user.administrator)
             return res.status(403)
-                .send("You don't have permissions to create new users");
+                .json({ message: "Not authorized to create new users (not administrator)" });
 
 
-        const newUser = await dbManager.newUser(req.body.token, req.body.admin === "true");
+        const newUser = await dbManager.newUser(req.body.token, req.body.administrator);
         if(newUser)
             res.status(200).json(newUser);
         else
-            res.status(500).send("The server encountered an error while creating the user in the database, it's possible that the token wasn't unique.");
+            res.status(400).json({ message: "Either the token / administrator body parameter is missing or a user with that token already exists" });
 
     } catch (e) {
         handleError(res, e);
@@ -74,7 +73,7 @@ exports.spotify = async (req, res) => {
         const spotifyURL = req.body.spotifyURL;
 
         if(!spotifyURL)
-            return res.status(404).send("A valid spotify URL hasn't been provided, please pass it in the request body");
+            return res.status(400).send({ message: "Missing spotifyURL in request body" });
 
         const downloadID = downloadsHandler.newDownload(spotifyURL, null);
 
@@ -95,7 +94,7 @@ exports.youtube = async (req, res) => {
         const audioOnly = req.body.audioOnly;
 
         if(!youtubeURL)
-            return res.status(404).send("A valid youtube URL hasn't been provided, please pass it in the request body");
+            return res.status(400).send({ message: "Missing youtubeURL in request body" });
 
         const downloadID = downloadsHandler.newDownload(null, youtubeURL, audioOnly);
 
@@ -105,21 +104,34 @@ exports.youtube = async (req, res) => {
     }
 }
 
-exports.downloadStatus = (req, res) => {
+exports.getDownloadInfo = (req, res) => {
     try {
-        res.status(202).json(downloadsHandler.getDownloadStatus(req.params.id));
+        const downloadInfo = downloadsHandler.getDownloadInfo(req.params.id);
+        if(!downloadInfo)
+            return res.status(400)
+                .json({ message: "A download with the provided downloadID doesn't exist" });
+
+        res.status(200).json(downloadInfo);
     } catch (e) {
         handleError(res, e);
     }
 }
 
-exports.getDownloadedData = (req, res) => {
+exports.getDownloadData = (req, res) => {
     try {
-        const downloadData = downloadsHandler.getDownloadStatus(req.params.id);
-        if(!downloadData.finished)
-            return res.status(404).send('Download data is not yet available');
+        const downloadInfo = downloadsHandler.getDownloadInfo(req.params.id);
 
-        sendZip(downloadData, res);
+        if(!downloadInfo)
+            return res.status(400)
+                .json({ message: "A download with the provided downloadID doesn't exist" });
+
+        if(downloadInfo.errored)
+            return res.status(404).json({ message: "The download has failed so it will not be available" });
+
+        if(!downloadInfo.completed)
+            return res.status(404).json({ message: "The download is still being processed so it's not available yet" });
+
+        sendZip(downloadInfo, res);
     } catch (e) {
         handleError(res, e);
     }
@@ -128,11 +140,11 @@ exports.getDownloadedData = (req, res) => {
 const handleError = (res, e) => {
     console.log(e);
     res.status(500)
-        .send(`Something bad happened ¯\_(ツ)_/¯`);
+        .json({ message: `Something bad happened ¯\_(ツ)_/¯` });
 }
 
-const sendZip = (downloadData, res) => {
-    let { directoryPathUnique, directoryPath, zipName } = downloadData;
+const sendZip = (downloadInfo, res) => {
+    let { directoryPathUnique, directoryPath, zipName } = downloadInfo;
 
     // Change the zip name to be asci only characters
     zipName = zipName.replace(path.extname(zipName), '').replace(/[^\x00-\x7F]/g, '');

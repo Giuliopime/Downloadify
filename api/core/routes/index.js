@@ -16,13 +16,13 @@ module.exports = (app) => {
 
         if(!token)
             return res.status(401)
-                .send("Token not found, pass it either in the Authorization header or via the 'token' cookie");
+                .json({ message: "Token was either not provided or it's not a valid token" });
 
 
         const user = await dbManager.getUser(token);
         if(!user)
             return res.status(401)
-                .send("Token not valid");
+                .json({ message: "Token was either not provided or it's not a valid token" });
 
         res.locals.user = user;
         res.locals.authViaCookie = usedCookies;

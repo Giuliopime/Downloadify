@@ -7,9 +7,9 @@ module.exports = (app) => {
     app.route('/youtube')
         .post(controller.youtube);
 
-    app.route('/download-status/:id')
-        .get(controller.downloadStatus);
+    app.route('/download-info/:id')
+        .get(controller.getDownloadInfo);
 
-    app.route('/get-download-data/:id')
-        .get(controller.getDownloadedData);
+    app.route('/download-data/:id')
+        .get(controller.getDownloadData);
 }
