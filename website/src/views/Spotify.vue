@@ -170,7 +170,7 @@ export default {
                           const a = document.getElementById('download-a-el');
                           a.href = url;
 
-                          a.download = res.headers['zip-file-name'] + '.zip';
+                          a.download = res.headers['file-name'];
                           a.click();
                           window.URL.revokeObjectURL(url);
                           this.showMessageCard();

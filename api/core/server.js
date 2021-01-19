@@ -8,7 +8,7 @@ const { APIPORT } = require('../config.js');
 
 const app = express();
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true, exposedHeaders: 'zip-file-name' }));
+app.use(cors({ origin: true, credentials: true, exposedHeaders: 'file-name' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

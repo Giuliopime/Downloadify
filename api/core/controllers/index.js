@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const archiver = require('archiver');
+const mime = require('mime-types')
 const dbManager = require('../db/dbManager');
 const downloadsHandler = require('../utils/downloadsHandler');
 
@@ -131,7 +132,7 @@ exports.getDownloadData = (req, res) => {
         if(!downloadInfo.completed)
             return res.status(404).json({ message: "The download is still being processed so it's not available yet" });
 
-        sendZip(downloadInfo, res);
+        sendFile(downloadInfo, res);
     } catch (e) {
         handleError(res, e);
     }
@@ -143,30 +144,50 @@ const handleError = (res, e) => {
         .json({ message: `Something bad happened ¯\_(ツ)_/¯` });
 }
 
-const sendZip = (downloadInfo, res) => {
-    let { directoryPathUnique, directoryPath, zipName } = downloadInfo;
+const sendFile = (downloadInfo, res) => {
+    let { directoryPathUnique, directoryPath, fileName } = downloadInfo;
 
-    // Change the zip name to be asci only characters
-    zipName = zipName.replace(path.extname(zipName), '').replace(/[^\x00-\x7F]/g, '');
-    console.log('Created zip: ' +zipName);
+    const downloadedFilesCount = fs.readdirSync(directoryPath).length;
+    if(downloadedFilesCount === 1) {
+        res.set('Content-Type', mime.lookup(path.extname(fileName)));
+        res.set('file-name', fileName.replace(/[^\x00-\x7F]/g, ''));
 
-    res.set('Content-Type', 'application/zip');
-    res.set('zip-file-name', zipName);
+        const filePath = directoryPath + '/' + fileName;
+        const readStream = fs.createReadStream(filePath);
 
-    // Zip all the content downloaded in the downloads folder
-    const archive = archiver('zip', { zlib: { level: 9 } });
+        readStream.on('error', err => {
+            console.log(err.message);
+            fs.rmdirSync(directoryPathUnique, { recursive: true });
+        });
 
-    // Delete the unique directory when the zip has been sent
-    archive.on('end', () => {
-        fs.rmdirSync(directoryPathUnique, { recursive: true });
-    });
+        readStream.on('close', () => {
+            fs.rmdirSync(directoryPathUnique, { recursive: true });
+        });
 
-    archive.on('error', err => {
-        console.log(err.message);
-        fs.rmdirSync(directoryPathUnique, { recursive: true });
-    });
+        readStream.pipe(res);
+    } else {
+        // Change the zip name to be asci only characters
+        fileName = fileName.replace(path.extname(fileName), '').replace(/[^\x00-\x7F]/g, '');
+        console.log('Created zip: ' +fileName);
 
-    archive.directory(`${directoryPath}/`, zipName);
-    archive.pipe(res);
-    archive.finalize();
+        res.set('Content-Type', 'application/zip');
+        res.set('file-name', fileName);
+
+        // Zip all the content downloaded in the downloads folder
+        const archive = archiver('zip', { zlib: { level: 9 } });
+
+        // Delete the unique directory when the zip has been sent
+        archive.on('end', () => {
+            fs.rmdirSync(directoryPathUnique, { recursive: true });
+        });
+
+        archive.on('error', err => {
+            console.log(err.message);
+            fs.rmdirSync(directoryPathUnique, { recursive: true });
+        });
+
+        archive.directory(`${directoryPath}/`, fileName);
+        archive.pipe(res);
+        archive.finalize();
+    }
 }
