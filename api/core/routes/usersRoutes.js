@@ -1,9 +1,6 @@
 const controller = require('../controllers');
 
 module.exports = (app) => {
-    app.route('/login')
-        .get(controller.login);
-
     app.route('/user')
         .get(controller.getUser);
 
