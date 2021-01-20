@@ -1,7 +1,7 @@
 # [Downloadify](https://downloadify.giuliopime.dev)
 Downloadify is a website that can be used to download YouTube videos / playlists (with the option to download only audio) & Spotify songs / albums / playlists.  
 
-### [API Documentation](htpps://downloadify-docs.giuliopime.dev)
+### [API Documentation](https://downloadify-docs.giuliopime.dev)
 
 ### TODO (but I'm too lazy)
 - Implement Redis for caching purposes
