@@ -17,7 +17,6 @@ module.exports = (app) => {
                 .json({ message: "Token was either not provided or it's not a valid token" });
 
         res.locals.user = user;
-        res.locals.authViaCookie = usedCookies;
 
         next();
     })
