@@ -91,12 +91,13 @@ export default {
 
       // Make get request to the server
       axios({
-        url: BASEURL + 'login',
+        url: BASEURL + 'user',
         headers: {
           Authorization: token
         }
       })
       .then(async () => {
+        localStorage.setItem('token', token);
         const redirect = getUrlParameter('redirect');
         await this.$router.push({ path: redirect ? redirect : '/'});
       })

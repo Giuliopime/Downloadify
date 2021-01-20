@@ -5,26 +5,6 @@ const mime = require('mime-types')
 const dbManager = require('../db/dbManager');
 const downloadsHandler = require('../utils/downloadsHandler');
 
-// Logs in the user and saves the token in a cookie (for the website), use /user if you want to use the APIs manually instead
-exports.login = async (req, res) => {
-    try {
-        // Login can only be made via authorization header
-        if(res.locals.authViaCookie)    {
-            return res.status(401)
-                .json({ message: "Token not found, pass it in the Authorization header" });
-        }
-
-        const user = res.locals.user;
-
-        res.cookie('token', user.token, { httpOnly: true });
-        res.status(200)
-            .json({administrator: user.administrator});
-
-    } catch (e) {
-        handleError(res, e);
-    }
-};
-
 // Gets user object (without token)
 exports.getUser = async (req, res) => {
     try {

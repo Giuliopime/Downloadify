@@ -54,7 +54,12 @@ axios.defaults.withCredentials = true
 router.beforeEach((to, from, next) => {
   if(to.matched.some(record => record.meta.requiresAuth)) {
     try {
-      axios(BASEURL + 'user')
+      axios({
+        url: BASEURL + 'user',
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
           .then(res => {
             if(res.status !== 200)
               next({
