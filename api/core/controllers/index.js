@@ -147,8 +147,7 @@ const handleError = (res, e) => {
 const sendFile = (downloadInfo, res) => {
     let { directoryPathUnique, directoryPath, fileName } = downloadInfo;
 
-    const downloadedFilesCount = fs.readdirSync(directoryPath).length;
-    if(downloadedFilesCount === 1) {
+    if(fs.lstatSync(directoryPath + '/' + fileName).isFile()) {
         res.set('Content-Type', mime.lookup(path.extname(fileName)));
         res.set('file-name', fileName.replace(/[^\x00-\x7F]/g, ''));
 
