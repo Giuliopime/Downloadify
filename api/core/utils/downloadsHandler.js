@@ -55,7 +55,7 @@ const startDownload = (downloadID) => {
     */
     const shellCommand = downloadInfo.spotifyURL ?
         `spotifydl ${URL} -o ${directoryPath}` :
-        `youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist -f ${downloadInfo.audioOnly ? 'bestaudio --extract-audio --audio-format mp3' : 'bestvideo[ext=mp4]'} ${URL}`;
+        `youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist -f ${downloadInfo.audioOnly ? 'bestaudio --extract-audio --audio-format mp3' : 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'} ${URL}`;
 
     downloadInfo.state = 1;
 
