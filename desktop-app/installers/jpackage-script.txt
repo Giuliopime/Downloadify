@@ -1,0 +1,11 @@
+macOS:
+jpackage --input ./  \
+--name Downloadify \
+--main-jar downloadify-desktop-app-1.0-all.jar \
+--type dmg \
+--icon path/to/icon/here \
+--app-version "1.0.0" \
+--mac-package-name "Downloadify" \
+--verbose \
+--java-options '--enable-preview'
+

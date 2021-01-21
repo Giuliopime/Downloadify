@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'downloadify.giuliopime.dev'
+version '1.0'
+
+application {
+    mainClassName = 'Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // IntelliJ Forms
+    implementation 'com.intellij:forms_rt:7.0.3'
+    // Api consumer
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // JSON converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.0'
+}
+
+
+test {
+    useJUnitPlatform()
+}
