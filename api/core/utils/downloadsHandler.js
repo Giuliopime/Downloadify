@@ -32,7 +32,7 @@ module.exports = {
 const startDownload = (downloadID) => {
     const downloadInfo = downloads[downloads.findIndex(data => data.downloadID === downloadID)];
 
-    let  mainDirectoryName, URL;
+    let  mainDirectoryName, URL, ytPlaylist = false;
 
     if(downloadInfo.spotifyURL) {
         mainDirectoryName = 'spotify-downloads';
@@ -43,6 +43,8 @@ const startDownload = (downloadID) => {
     } else {
         mainDirectoryName = 'youtube-downloads';
         URL = downloadInfo.youtubeURL;
+        if(URL.includes("playlist?"))
+            ytPlaylist = true;
     }
 
     const { directoryPathUnique, directoryPath } = setupDirectoriesForDownload(mainDirectoryName, downloadID);
@@ -53,9 +55,10 @@ const startDownload = (downloadID) => {
        --no-playlist makes it so if a yt link includes a playlist (other than a video) it downloads only the video and not the full playlist
        -f bestaudio[ext=m4a] downloads only the audio, in m4a format
     */
+
     const shellCommand = downloadInfo.spotifyURL ?
         `spotifydl ${URL} -o ${directoryPath}` :
-        `youtube-dl -o "${directoryPath+'/%(title)s.%(ext)s'}" --no-playlist -f ${downloadInfo.audioOnly ? 'bestaudio --extract-audio --audio-format mp3' : 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'} ${URL}`;
+        `youtube-dl -o "${directoryPath + (ytPlaylist ? '/%(playlist_title)s' : '') + '/%(title)s.%(ext)s'}" --no-playlist -f ${downloadInfo.audioOnly ? 'bestaudio --extract-audio --audio-format mp3' : 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'} ${URL}`;
 
     downloadInfo.state = 1;
 
