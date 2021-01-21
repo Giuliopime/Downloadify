@@ -126,6 +126,8 @@ const handleError = (res, e) => {
 
 const sendFile = (downloadInfo, res) => {
     let { directoryPathUnique, directoryPath, fileName } = downloadInfo;
+    const fileSize = fs.statSync(directoryPath + '/' + fileName).size;
+    res.set('Content-Length', fileSize);
 
     if(fs.lstatSync(directoryPath + '/' + fileName).isFile()) {
         res.set('Content-Type', mime.lookup(path.extname(fileName)));
