@@ -129,9 +129,12 @@ export default {
       this.showDownloadingStateBtn();
       this.changeDownloadBtnText("Processing...");
 
+      const token = localStorage.getItem('token');
+
       axios({
         method: 'post',
         url: BASEURL + 'youtube',
+        headers: { Authorization: token },
         data: {
           youtubeURL: youtubeLink,
           audioOnly: document.getElementById('only-audio-cb').checked
@@ -141,7 +144,7 @@ export default {
             const downloadID = res.data.downloadID;
 
             const checkStateInterval = setInterval(() => {
-              axios(BASEURL + 'download-info/'+downloadID)
+              axios({ url: BASEURL + 'download-info/'+downloadID, headers: { Authorization: token }})
                   .then(res => {
                     const downloadInfo = res.data;
 
@@ -168,6 +171,7 @@ export default {
                       clearInterval(checkStateInterval);
                       axios({
                         url: BASEURL + 'download-data/' + downloadID,
+                        headers: { Authorization: token },
                         responseType: 'arraybuffer'
                       })
                           .then(res => {
