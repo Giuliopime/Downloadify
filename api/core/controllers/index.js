@@ -126,6 +126,8 @@ const handleError = (res, e) => {
 
 const sendFile = (downloadInfo, res) => {
     let { directoryPathUnique, directoryPath, fileName } = downloadInfo;
+    console.log(fileName)
+    console.log(fs.lstatSync(directoryPath + '/' + fileName).isFile())
 
     if(fs.lstatSync(directoryPath + '/' + fileName).isFile()) {
         res.set('Content-Type', mime.lookup(path.extname(fileName)));
@@ -146,11 +148,11 @@ const sendFile = (downloadInfo, res) => {
         readStream.pipe(res);
     } else {
         // Change the zip name to be asci only characters
-        fileName = fileName.replace(path.extname(fileName), '').replace(/[^\x00-\x7F]/g, '');
+        fileName = fileName.replace(/[^\x00-\x7F]/g, '');
         console.log('Created zip: ' +fileName);
 
         res.set('Content-Type', 'application/zip');
-        res.set('file-name', fileName);
+        res.set('file-name', fileName + '.zip');
 
         // Zip all the content downloaded in the downloads folder
         const archive = archiver('zip', { zlib: { level: 9 } });
@@ -165,7 +167,7 @@ const sendFile = (downloadInfo, res) => {
             fs.rmdirSync(directoryPathUnique, { recursive: true });
         });
 
-        archive.directory(`${directoryPath}/`, fileName);
+        archive.directory(`${directoryPath}/`, false);
         archive.pipe(res);
         archive.finalize();
     }
