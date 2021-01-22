@@ -22,6 +22,8 @@ public class ViewsManager extends JFrame{
         changeView(Views.HOME);
 
         setName("Downloadify");
+        setFocusable(true);
+        setFocusableWindowState(true);
         setSize(new Dimension(1000, 600));
         setMinimumSize(new Dimension(800, 600));
         setVisible(true);

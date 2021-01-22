@@ -2,6 +2,7 @@ package views;
 
 import apiConsumer.AuthManager;
 import dialogs.ErrorDialog;
+import dialogs.InfoDialog;
 import views.graphicUtils.Colors;
 import views.graphicUtils.RoundedBorder;
 
@@ -137,19 +138,24 @@ public class Login {
 
     private void initEvents() {
         rootPnl.registerKeyboardAction(e -> logIn(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        signInPnl.addMouseListener(new MouseAdapter() {
+        addMouseListenersToSignInBtn();
+
+        questionLbl.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                logIn();
+                new InfoDialog("Contact the developer to get your token back.");
             }
         });
     }
 
     private void logIn() {
+        removeMouseListenersFromSignInBtn();
         String token = tokenInpField.getText();
 
-        if (token.isBlank())
+        if (token.isBlank()) {
             new ErrorDialog("Invalid Token.");
+            addMouseListenersToSignInBtn();
+        }
         else {
             signInLbl.setText("Signing you in...");
             if (AuthManager.getInstance().authenticate(token))
@@ -157,8 +163,45 @@ public class Login {
             else {
                 signInLbl.setText("Sign in");
                 new ErrorDialog("Invalid Token.");
+                addMouseListenersToSignInBtn();
             }
         }
+    }
+
+    private void removeMouseListenersFromSignInBtn() {
+        for(MouseListener mouseListener: signInPnl.getMouseListeners())
+            signInPnl.removeMouseListener(mouseListener);
+    }
+
+    private void addMouseListenersToSignInBtn() {
+        signInPnl.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                logIn();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                signInLbl.setForeground(Color.WHITE);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                signInLbl.setForeground(Colors.primaryBG);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                signInPnl.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                signInLbl.setForeground(Colors.primaryBG);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                signInPnl.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                signInLbl.setForeground(Colors.text);
+            }
+        });
     }
 
     public JPanel getRootPnl() {

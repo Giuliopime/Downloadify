@@ -11,8 +11,13 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -55,6 +60,21 @@ public class YouTube {
             }
         });
 
+        questionLbl.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://support.google.com/youtube/answer/57793?co=GENIE.Platform%3DDesktop&hl=en"));
+                    } catch (IOException | URISyntaxException exception) {
+                        new ErrorDialog("Couldn't open the browser.");
+                    }
+                } else {
+                    new ErrorDialog("Couldn't open the browser.");
+                }
+            }
+        });
+
         addMouseListenerToDownloadBtn();
     }
 
@@ -91,22 +111,52 @@ public class YouTube {
                             downloadLbl.setText("Receiving files...");
                             executor.shutdown();
 
-                            CompletableFuture.runAsync(() -> {
-                                int downloadResult = APIConsumer.getInstance().downloadData(downloadID);
-                                switch (downloadResult) {
-                                    case 0 -> {
-                                        addMouseListenerToDownloadBtn();
-                                        Styler.addMouseListenersToDownloadBtn(downloadBtnPnl, downloadLbl);
-                                        downloadLbl.setText("Download");
+                            if(ViewsManager.getInstance().getFrame().isActive())
+                                saveFiles(downloadID);
+                            else {
+                                ViewsManager.getInstance().getFrame().addWindowFocusListener(new WindowFocusListener() {
+                                    @Override
+                                    public void windowGainedFocus(WindowEvent e) {
+                                        saveFiles(downloadID);
                                     }
-                                    case 1, 2 -> handleError();
-                                }
-                            });
+
+                                    @Override
+                                    public void windowLostFocus(WindowEvent e) {
+
+                                    }
+                                });
+                            }
                         }
                     };
                     executor.scheduleAtFixedRate(checkDownloadInfo, 0, 3, TimeUnit.SECONDS);
                 }
             }
+        });
+    }
+
+    private void saveFiles(String downloadID) {
+        JFrame frame = ViewsManager.getInstance().getFrame();
+        for(WindowFocusListener focusListener: frame.getWindowFocusListeners())
+            frame.removeWindowFocusListener(focusListener);
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int scelta = fileChooser.showSaveDialog(ViewsManager.getInstance().getFrame());
+
+        if (scelta != JFileChooser.APPROVE_OPTION) {
+            handleError();
+            return;
+        }
+
+        CompletableFuture.runAsync(() -> {
+            boolean downloadResult = APIConsumer.getInstance().downloadData(downloadID, fileChooser.getSelectedFile().getPath());
+            if(downloadResult) {
+                addMouseListenerToDownloadBtn();
+                Styler.addMouseListenersToDownloadBtn(downloadBtnPnl, downloadLbl);
+                downloadLbl.setText("Download");
+            }
+            else
+                handleError();
         });
     }
 

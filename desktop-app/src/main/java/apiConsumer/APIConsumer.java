@@ -97,29 +97,22 @@ public class APIConsumer {
         }
     }
 
-    public int downloadData(String downloadID) {
+    public boolean downloadData(String downloadID, String directoryPath) {
         try {
             Response<ResponseBody> response = downloadService.getDownloadData(DataManager.getTokenDataCached().getToken(), downloadID).execute();
             if(response.isSuccessful()) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int scelta = fileChooser.showSaveDialog(ViewsManager.getInstance().getFrame());
-
-                if (scelta != JFileChooser.APPROVE_OPTION)
-                    return 1;
-
-                File file = new File(fileChooser.getSelectedFile().getPath() + "/" + response.headers().get("file-name"));
+                File file = new File(directoryPath + "/" + response.headers().get("file-name"));
                 OutputStream outputStream = new FileOutputStream(file, false);
                 response.body().byteStream().transferTo(outputStream);
                 outputStream.close();
-                return 0;
+                return true;
             }
             else
-                return 2;
+                return false;
         }
         catch (IOException e) {
             System.out.println("An error occurred while receiving download data:\n" + e.getMessage());
-            return 2;
+            return false;
         }
     }
 }
