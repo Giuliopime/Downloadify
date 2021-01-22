@@ -9,3 +9,16 @@ jpackage --input ./  \
 --verbose \
 --java-options '--enable-preview'
 
+Windows
+jpackage --input .\ ^
+--name Downloadify ^
+--main-jar downloadify-desktop-app-1.0-all.jar ^
+--type msi ^
+--icon C:\Users\Giuliopime\Downloads\logo.ico ^
+--app-version "1.0.0" ^
+--verbose ^
+--java-options '--enable-preview' ^
+--win-menu ^
+--win-per-user-install ^
+--win-shortcut
+

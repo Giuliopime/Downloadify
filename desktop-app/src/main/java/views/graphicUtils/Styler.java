@@ -76,8 +76,10 @@ public class Styler {
             }
         });
 
-        if(audioOnlyCb != null)
+        if(audioOnlyCb != null) {
             audioOnlyCb.setForeground(Colors.text);
+            audioOnlyCb.setBackground(Colors.primaryBG);
+        }
 
         cardPnl.setBorder(new RoundedBorder(Colors.cardBorder, 12));
 
