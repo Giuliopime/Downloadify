@@ -99,19 +99,19 @@ public class Styler {
         });
 
         URLInpField.setBackground(Colors.primaryBG);
-        URLInpField.setBorder(new RoundedBorder(Colors.inputBorder, 12));
+        URLInpField.setBorder(new RoundedBorder(Colors.inputBorder, 9));
         URLInpField.setCaretColor(Colors.text);
         URLInpField.setForeground(Colors.text);
 
         URLInpField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                URLInpField.setBorder(new RoundedBorder(Colors.inputFocusedBorder, 12));
+                URLInpField.setBorder(new RoundedBorder(Colors.inputFocusedBorder, 9));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                URLInpField.setBorder(new RoundedBorder(Colors.inputBorder, 12));
+                URLInpField.setBorder(new RoundedBorder(Colors.inputBorder, 9));
             }
         });
 
