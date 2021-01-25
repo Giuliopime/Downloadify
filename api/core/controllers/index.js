@@ -65,22 +65,6 @@ exports.spotify = async (req, res) => {
     }
 }
 
-exports.spotifyWithParams = async (req, res) => {
-    try {
-        const spotifyURL = req.params.url;
-
-        if(!spotifyURL)
-            return res.status(400).send({ message: "Missing spotifyURL in request params" });
-
-        const downloadID = downloadsHandler.newDownload(spotifyURL, null);
-
-        res.status(202).json({ downloadID: downloadID });
-
-    } catch (e) {
-        handleError(res, e);
-    }
-}
-
 
 /*
 REQUIRES YOUTUBE-DL (https://youtube-dl.org/)
@@ -92,22 +76,6 @@ exports.youtube = async (req, res) => {
 
         if(!youtubeURL)
             return res.status(400).send({ message: "Missing youtubeURL in request body" });
-
-        const downloadID = downloadsHandler.newDownload(null, youtubeURL, audioOnly);
-
-        res.status(202).json({ downloadID: downloadID });
-    } catch (e) {
-        handleError(res, e);
-    }
-}
-
-exports.youtubeWithParams = async (req, res) => {
-    try {
-        const youtubeURL = req.params.url;
-        const audioOnly = req.query.audioOnly;
-
-        if(!youtubeURL)
-            return res.status(400).send({ message: "Missing youtubeURL in request parameters" });
 
         const downloadID = downloadsHandler.newDownload(null, youtubeURL, audioOnly);
 
