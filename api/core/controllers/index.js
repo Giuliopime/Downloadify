@@ -65,7 +65,7 @@ exports.spotify = async (req, res) => {
     }
 }
 
-exports.spotifyWithParam = async (req, res) => {
+exports.spotifyWithParams = async (req, res) => {
     try {
         const spotifyURL = req.params.url;
 
