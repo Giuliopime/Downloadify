@@ -3,7 +3,7 @@
 	"name": "Downloadify - YouTube & Spotify downloader",
 	"lang": "en",
 	"description": "With Downloadify you can download YouTube video / playlist (with the option to download only the audio) & Spotify songs / albums / playlists (completely open source).",
-	"start_url": "https://downloadify.giuliopime.dev",
+	"start_url": "/",
 	"background_color": "#0e1116",
 	"theme_color": "#714fe9",
 	"dir": "ltr",
@@ -81,5 +81,5 @@
 			"sizes": "16x16"
 		}
 	],
-	"prefer_related_applications": "false"
+	"prefer_related_applications": false
 }
