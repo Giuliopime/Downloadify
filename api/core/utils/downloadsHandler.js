@@ -66,6 +66,7 @@ const startDownload = (downloadID) => {
         if (error) {
             downloadInfo.errored = true;
             fs.rmdirSync(directoryPathUnique, { recursive: true });
+            console.log(error)
             return;
         }
 
