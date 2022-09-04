@@ -69,7 +69,7 @@ const startDownload = (downloadID) => {
             console.log(error)
             return;
         }
-
+Ï
         downloadInfo.completed = true;
         downloadInfo.state = 2;
 
