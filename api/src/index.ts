@@ -6,6 +6,8 @@ import connect from "./db";
 import session from "express-session";
 import {nanoid} from "nanoid";
 import morgan from "morgan"
+import connect_redis from "connect-redis";
+import {createClient} from "redis";
 
 // Check for missing environment variables from .env file
 dotenv.config()
@@ -22,6 +24,14 @@ if (missing !== undefined) {
   process.exit(1)
 }
 
+const RedisStore = connect_redis(session)
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+  legacyMode: true,
+})
+redisClient.connect().catch(console.error)
+redisClient.on("error", console.error)
+
 
 const PORT: number = parseInt(process.env.PORT!, 10)
 
@@ -34,9 +44,10 @@ app.use(cors())
 app.use(express.json())
 
 app.use(session({
-  genid: function(req) {
+  genid: function(_) {
     return nanoid() // Alternative to uuid
   },
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.COOKIE_SECRET!,
   resave: false,
   saveUninitialized: false,
