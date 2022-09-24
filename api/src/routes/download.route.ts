@@ -6,22 +6,15 @@ import { OdesliResponse } from "../typing-stubs"
 
 const router = express.Router()
 
-enum sources {
-    YouTube,
-    Spotify
-}
-
 type DownloadQuery = {
-    source: sources,
     url: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get("/download-info",  async (req: Request<unknown, unknown, unknown, DownloadQuery>, res: Response) => {
-    const source = req.query.source
     let url: string = decodeURIComponent(req.query.url)
 
-    if (source === sources.Spotify) {
+    if (url.includes("spotify")) {
         const response: AxiosResponse<OdesliResponse> = await axios.get("https://api.song.link/v1-alpha.1/links?url=" + url + "&userCountry=IT")
         const youtubeUrl = response.data.linksByPlatform.youtube.url
         url = youtubeUrl.substring(1, youtubeUrl.length-1)
