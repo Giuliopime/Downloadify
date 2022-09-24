@@ -2,12 +2,12 @@ import * as dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import routes from "./routes"
-import connect from "./db";
-import session from "express-session";
-import {nanoid} from "nanoid";
+import connect from "./db"
+import session from "express-session"
+import {nanoid} from "nanoid"
 import morgan from "morgan"
-import connect_redis from "connect-redis";
-import {createClient} from "redis";
+import connect_redis from "connect-redis"
+import {createClient} from "redis"
 
 // Check for missing environment variables from .env file
 dotenv.config()
@@ -24,6 +24,7 @@ if (missing !== undefined) {
   process.exit(1)
 }
 
+// Connect to redis for storing sessions
 const RedisStore = connect_redis(session)
 const redisClient = createClient({
   url: process.env.REDIS_URL,
@@ -38,7 +39,7 @@ const PORT: number = parseInt(process.env.PORT!, 10)
 const app = express()
 // Logs all requests
 app.use(morgan('combined'))
-// This api is on a api. subdomain
+// This api is on a subdomain
 app.use(cors())
 
 app.use(express.json())
@@ -53,7 +54,7 @@ app.use(session({
   saveUninitialized: false,
   unset: "destroy",
   cookie: {
-    secure: true
+    secure: true // https
   }
 }))
 
@@ -62,6 +63,6 @@ app.listen(PORT, () => {
 
   // Connect to MongoDb
   void connect()
-  
+
   routes(app)
 })

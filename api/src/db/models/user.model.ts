@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import mongoose from "mongoose"
+import bcrypt from "bcrypt"
 
 export type UserDocument = {
-    username: string;
-    password: string;
-    admin: boolean;
-    downloads: number;
-    comparePassword: (candidatePassword: string) => Promise<boolean>;
+    username: string
+    password: string
+    admin: boolean
+    downloads: number
+    comparePassword: (candidatePassword: string) => Promise<boolean>
 } & mongoose.Document
 
 const UserSchema = new mongoose.Schema(
@@ -17,33 +17,33 @@ const UserSchema = new mongoose.Schema(
         downloads: { type: Number, required: true, default: 0 }
     },
     { timestamps: true }
-);
+)
 
 UserSchema.pre("save", async function(next) {
-    const user = this as UserDocument;
+    const user = this as UserDocument
 
     // only hash the password if it has been modified (or is new)
     if (!user.isModified("password"))
-        return next(); // Honestly, I don't know why I made this api in typescript, but I kinda regret it
+        return next() // Honestly, I don't know why I made this api in typescript, but I kinda regret it
 
     // Random additional data
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10)
 
     // Replace the password with the hash
-    user.password = bcrypt.hashSync(user.password, salt);
+    user.password = bcrypt.hashSync(user.password, salt)
 
-    return next();
-});
+    return next()
+})
 
 // Used for logging in
 UserSchema.methods.comparePassword = async function (
     candidatePassword: string
 ) {
-    const user = this as UserDocument;
+    const user = this as UserDocument
 
-    return await bcrypt.compare(candidatePassword, user.password).catch(_ => false);
-};
+    return await bcrypt.compare(candidatePassword, user.password).catch(_ => false)
+}
 
-const User = mongoose.model<UserDocument>("user", UserSchema);
+const UserModel = mongoose.model<UserDocument>("user", UserSchema)
 
-export default User;
+export default UserModel

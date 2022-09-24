@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from "mongoose"
 
 if (process.env.MONGODB_URI === undefined) {
     console.error("Invalid .env configuration, missing MONGODB_URI")
