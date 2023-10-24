@@ -1,7 +1,10 @@
 # [Downloadify](https://downloadify.giuliopime.dev)
 Downloadify is a website that can be used to download YouTube videos / playlists (with the option to download only audio) & Spotify songs / albums / playlists.  
+It also has a desktop app, that I made as a school assignment in java Swing ^^.  
+The backend instead has been made with express.js.
 
-### [API Documentation](https://downloadify-docs.giuliopime.dev)
+## Status
+This doesn't work as I'm not using it anymore.
 
 ### TODO (but I'm too lazy)
 - Implement Redis for caching purposes
